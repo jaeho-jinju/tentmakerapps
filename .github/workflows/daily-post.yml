@@ -1,0 +1,54 @@
+# 매일 글 한 편: 앱을 돌아가며 고르고, Claude가 쓰고, 검사를 통과하면 커밋한다. 커밋하면 Cloudflare Pages가 배포한다.
+# 공개 저장소라 남이 부를 수 있는 트리거(issue_comment·pull_request_target 등)는 두지 않는다.
+# workflow_dispatch(손으로 실행)는 이 저장소에 쓰기 권한이 있는 사람만 누를 수 있다.
+name: 매일 글
+
+on:
+  schedule:
+    - cron: "17 0 * * *" # 매일 09:17(한국). 정각은 몰려서 늦거나 빠질 수 있어 피한다.
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-post
+
+defaults:
+  run:
+    shell: bash # pipefail을 켠다
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm install -g @anthropic-ai/claude-code@2.1.319
+
+      - name: 글 받기
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: |
+          app=$(node scripts/post.mjs pick)
+          echo "APP=$app" >> "$GITHUB_ENV"
+          node scripts/post.mjs prompt "$app" \
+            | claude -p --tools "" --system-prompt "너는 짧은 한국어 블로그 글을 쓴다. 지시한 형식만 답한다." \
+            > "$RUNNER_TEMP/reply.md"
+
+      - name: 검사하고 글 만들기
+        run: node scripts/post.mjs publish "$APP" "$RUNNER_TEMP/reply.md" | tee "$RUNNER_TEMP/published.txt"
+
+      - name: 커밋
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps site
+          git commit -m "글: $(cat "$RUNNER_TEMP/published.txt")"
+          git push

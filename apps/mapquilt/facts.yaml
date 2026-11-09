@@ -176,31 +176,36 @@ facts:
       - mapquilt:src/core/regions/index.ts short
       - mapquilt:docs/store-listing.md §5.4
 
-# 글에서 쓰지 않는 것. 스토어 문안 원칙을 글에도 그대로 쓴다.
+# 글에서 쓰지 않는 것. 스토어 문안 원칙을 글에도 그대로 쓴다. words에 있는 말이 글에 있으면 검사에서 떨어진다.
 avoid:
   - id: no-photo-limit
     rule: 한 지역의 사진 수 상한(10장)은 쓰지 않는다. 한정 짓는 말로 읽힌다.
+    words: [10장, 열 장]
     source:
       - mapquilt:docs/store-listing.md 원칙
       - mapquilt#88
 
   - id: no-memo-limit
     rule: 메모 글자 수 상한(200자)도 같은 이유로 쓰지 않는다.
+    words: [200자]
     source:
-      - no-photo-limit과 같은 이유(2026-11-09 초안에서 넓힘)
+      - no-photo-limit과 같은 이유(2026-11-09 사용자 확인)
 
   - id: no-trademarks
     rule: 남의 상표와 앱 이름을 쓰지 않는다. 공유할 곳은 '메신저·SNS'라고만 쓴다.
+    words: [인스타그램, 인스타, 카카오, 카톡, 네이버, 페이스북, 틱톡, 유튜브, 스레드, 트위터, 구글 지도, 구글맵, 티맵, 애플 지도]
     source:
       - mapquilt:docs/store-listing.md 원칙
 
   - id: no-hype
     rule: 앱을 치켜세우는 말("최고", "가장 쉬운")과 순위·가격 문구를 쓰지 않는다.
+    words: [최고, 1위, 최초, 유일, 완벽, 가장 쉬운, 가장 좋은, 강력 추천, 필수 앱]
     source:
       - mapquilt:docs/store-listing.md 원칙
 
   - id: screen-words
     rule: 앱 안의 지도 한 장은 "지도"라고 쓰고 "퀼트"라고 쓰지 않는다. 버튼은 화면 글자 그대로 [사진 고르기]처럼 쓴다.
+    words: [퀼트]
     source:
       - mapquilt:docs/store-listing.md 원칙
       - mapquilt:GLOSSARY.md 퀼트
