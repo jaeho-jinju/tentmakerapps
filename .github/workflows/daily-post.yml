@@ -40,7 +40,8 @@ jobs:
           echo "APP=$app" >> "$GITHUB_ENV"
           node scripts/post.mjs prompt "$app" \
             | claude -p --tools "" --system-prompt "너는 짧은 한국어 블로그 글을 쓴다. 지시한 형식만 답한다." \
-            > "$RUNNER_TEMP/reply.md"
+            > "$RUNNER_TEMP/reply.md" \
+            || { cat "$RUNNER_TEMP/reply.md"; exit 1; } # claude는 "Not logged in" 같은 오류도 stdout에 쓴다
 
       - name: 검사하고 글 만들기
         run: node scripts/post.mjs publish "$APP" "$RUNNER_TEMP/reply.md" | tee "$RUNNER_TEMP/published.txt"
