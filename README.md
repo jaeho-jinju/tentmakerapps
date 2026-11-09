@@ -9,4 +9,14 @@
   - `site/robots.txt`·`site/sitemap.xml`: 검색 엔진용
 - 배포: Cloudflare Pages 프로젝트 `tentmakerapps`가 이 저장소의 `main`에 연결돼 있다. 커밋하면 자동으로 배포된다. 출력 폴더는 `site`다.
 
+- `docs/<앱>.md`: 앱 소개 페이지마다 정한 것과 그림 만드는 법
+
 정한 것과 이유는 mapquilt 저장소 이슈 #93에 있다.
+
+## 옛 주소
+
+- `legacy/mapquilt.pages.dev/_redirects`: 예전 소개 페이지 주소(`mapquilt.pages.dev`)의 모든 경로를 `tentmakerapps.com/mapquilt/`로 301 넘긴다. Cloudflare Pages 프로젝트 `mapquilt`(직접 올리기)에 이 폴더만 올린다. 이 파일을 바꿨을 때만 다시 올린다.
+
+  ```sh
+  pnpm dlx wrangler@4 pages deploy legacy/mapquilt.pages.dev --project-name mapquilt --branch main
+  ```
