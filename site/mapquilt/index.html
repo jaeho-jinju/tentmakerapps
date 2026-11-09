@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>조각지도 - 사진으로 채우는 전국 지도</title>
+    <meta
+      name="description"
+      content="캠핑장·여행지·맛집처럼 주제를 정해, 다녀온 시·군을 사진으로 채워 가는 전국 지도입니다."
+    />
+    <meta property="og:title" content="조각지도 - 사진으로 채우는 전국 지도" />
+    <meta
+      property="og:description"
+      content="캠핑장·여행지·맛집처럼 주제를 정해, 다녀온 시·군을 사진으로 채워 가는 전국 지도입니다."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tentmakerapps.com/mapquilt/" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:image" content="https://tentmakerapps.com/mapquilt/img/og.jpg" />
+    <meta property="og:image:width" content="1024" />
+    <meta property="og:image:height" content="500" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://tentmakerapps.com/mapquilt/" />
+    <link rel="icon" href="img/icon-180.png" />
+    <link rel="apple-touch-icon" href="img/icon-180.png" />
+    <link rel="preload" as="image" href="img/01.webp" />
+    <style>
+      :root {
+        --navy: #12304a;
+        --sea: #3d7ea6;
+        --blue: #2f74a8;
+        --muted: #55667a;
+        --sky: #e3eff7;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+        color: var(--navy);
+        line-height: 1.6;
+        word-break: keep-all;
+        background: #fff;
+      }
+      a {
+        color: inherit;
+      }
+      .wrap {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      b.hl {
+        color: var(--blue);
+      }
+
+      /* 머리 */
+      header .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 88px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+      .brand img {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+      }
+      .brand b {
+        display: block;
+        font-size: 18px;
+        line-height: 1.1;
+      }
+      .brand small {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      header nav {
+        display: flex;
+        gap: 28px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      header nav a {
+        text-decoration: none;
+      }
+
+      /* 첫 화면: 옅은 하늘색 빛 */
+      .top {
+        background: radial-gradient(60% 70% at 65% 45%, #cfe4f2 0%, #eaf3f9 45%, #fff 85%);
+      }
+      .hero {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+        padding: 40px 24px 96px;
+      }
+      .hero-text {
+        flex: 1;
+        max-width: 520px;
+      }
+      .hero h1 {
+        font-size: 48px;
+        line-height: 1.2;
+        letter-spacing: -0.03em;
+        margin: 0 0 20px;
+      }
+      .hero p {
+        font-size: 17px;
+        color: var(--muted);
+        margin: 0 0 20px;
+      }
+      .perks {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 0 0 28px;
+        padding: 0;
+      }
+      .perks li {
+        font-size: 13px;
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: #fff;
+        border: 1px solid #cfe0ec;
+      }
+      .perks li::before {
+        content: "✓ ";
+        color: var(--blue);
+      }
+      .stores {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+      .stores img {
+        display: block;
+        height: 52px;
+        width: auto;
+      }
+      .stores .soon {
+        position: relative;
+      }
+      .stores .soon img {
+        opacity: 0.45;
+      }
+      .stores .soon em {
+        position: absolute;
+        top: -9px;
+        right: -6px;
+        font-style: normal;
+        font-size: 11px;
+        font-weight: 700;
+        color: #fff;
+        background: var(--blue);
+        padding: 1px 8px;
+        border-radius: 999px;
+      }
+
+      /* 기울인 휴대폰 */
+      .phone {
+        width: 250px;
+        border: 8px solid #f4f6f8;
+        border-radius: 40px;
+        overflow: hidden;
+        background: #f4f6f8;
+        box-shadow:
+          0 0 0 1px #d9dee3,
+          0 30px 60px rgb(18 48 74 / 0.18);
+      }
+      .phone img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 32px;
+      }
+      .devices {
+        flex: 1;
+        position: relative;
+        height: 600px;
+      }
+      .devices .phone {
+        position: absolute;
+      }
+      .devices .back {
+        right: 30px;
+        top: 70px;
+        width: 220px;
+        transform: rotate(9deg);
+      }
+      .devices .front {
+        left: 40px;
+        top: 0;
+        transform: rotate(-5deg);
+      }
+
+      /* 기능: 시·군 경계선 배경 */
+      .feature {
+        position: relative;
+        padding: 72px 0;
+      }
+      .feature::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: url(img/korea.svg) center / auto 115% no-repeat;
+        opacity: 0.24;
+        pointer-events: none;
+      }
+      .feature .wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 64px;
+      }
+      .feature .text {
+        flex: 1;
+        max-width: 460px;
+        margin-left: 6%;
+      }
+      .eyebrow {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--blue);
+        margin-bottom: 6px;
+      }
+      .feature h2 {
+        font-size: 38px;
+        line-height: 1.25;
+        letter-spacing: -0.02em;
+        margin: 0 0 16px;
+      }
+      .feature p {
+        color: var(--muted);
+        margin: 0 0 12px;
+      }
+      .feature .phone {
+        width: 230px;
+        transform: rotate(4deg);
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        max-width: 260px;
+      }
+      .chips span {
+        font-size: 12px;
+        font-weight: 600;
+        color: #fff;
+        background: var(--blue);
+        padding: 3px 10px;
+        border-radius: 999px;
+      }
+
+      /* 그 밖에도 */
+      .more {
+        padding: 72px 0 40px;
+      }
+      .more h2 {
+        text-align: center;
+        font-size: 32px;
+        margin: 0 0 40px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px 40px;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      .grid h3 {
+        font-size: 16px;
+        margin: 0 0 4px;
+      }
+      .grid p {
+        margin: 0;
+        font-size: 15px;
+        color: var(--muted);
+      }
+
+      /* 마지막 받기 카드 */
+      .cta {
+        margin: 56px auto 0;
+        max-width: 1000px;
+        border-radius: 28px;
+        padding: 56px;
+        color: #fff;
+        background: linear-gradient(160deg, #2f74a8 0%, #3d7ea6 55%, #8fc0dc 100%);
+        display: flex;
+        align-items: center;
+        gap: 48px;
+      }
+      .cta .text {
+        flex: 1;
+      }
+      .cta h2 {
+        font-size: 34px;
+        line-height: 1.25;
+        margin: 0 0 24px;
+      }
+      .cta .perks li {
+        background: rgb(255 255 255 / 0.14);
+        border-color: rgb(255 255 255 / 0.35);
+      }
+      .cta .perks li::before {
+        color: #fff;
+      }
+      .video {
+        flex: none;
+        width: 240px;
+        aspect-ratio: 9 / 16;
+        border-radius: 20px;
+        overflow: hidden;
+        background: #000;
+        position: relative;
+        border: 0;
+        padding: 0;
+        cursor: pointer;
+      }
+      .video img,
+      .video iframe {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        object-fit: cover;
+      }
+      .video .play {
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: rgb(0 0 0 / 0.55);
+        color: #fff;
+        font-size: 26px;
+        line-height: 64px;
+        text-align: center;
+      }
+
+      footer {
+        padding: 56px 0 48px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      footer .wrap {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+      footer nav {
+        display: flex;
+        gap: 20px;
+      }
+
+      /* 휴대폰 폭 */
+      @media (max-width: 760px) {
+        header nav {
+          display: none;
+        }
+        header .wrap {
+          height: 72px;
+        }
+        .hero {
+          flex-direction: column;
+          text-align: center;
+          padding: 16px 24px 40px;
+          gap: 24px;
+        }
+        .hero h1 {
+          font-size: 34px;
+        }
+        .hero p {
+          font-size: 16px;
+        }
+        .perks,
+        .stores {
+          justify-content: center;
+        }
+        .stores {
+          gap: 10px;
+        }
+        .stores img {
+          height: 46px;
+        }
+        .devices {
+          width: 100%;
+          height: 420px;
+          flex: none;
+        }
+        .devices .front {
+          width: 190px;
+          left: calc(50% - 150px);
+        }
+        .devices .back {
+          width: 170px;
+          right: calc(50% - 160px);
+          top: 50px;
+        }
+        .feature {
+          padding: 48px 0;
+        }
+        .feature::before {
+          background-size: auto 90%;
+        }
+        .feature .wrap {
+          flex-direction: column;
+          gap: 28px;
+          text-align: center;
+        }
+        .feature .text {
+          margin: 0;
+        }
+        .feature h2 {
+          font-size: 28px;
+        }
+        .feature .phone {
+          width: 190px;
+        }
+        .chips {
+          justify-content: center;
+          max-width: none;
+        }
+        .more h2 {
+          font-size: 26px;
+        }
+        .grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 24px 20px;
+        }
+        .cta {
+          margin: 32px 16px 0;
+          padding: 40px 16px;
+          flex-direction: column;
+          text-align: center;
+          gap: 32px;
+        }
+        .cta h2 {
+          font-size: 26px;
+        }
+        .video {
+          width: 200px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top">
+      <header>
+        <div class="wrap">
+          <a class="brand" href="#">
+            <img src="img/icon.webp" alt="" width="40" height="40" />
+            <span><b>조각지도</b><small>사진으로 채우는 전국 지도</small></span>
+          </a>
+          <nav>
+            <a href="#features">기능</a>
+            <a href="#video">영상</a>
+            <a href="mailto:ovsoce@gmail.com">문의</a>
+          </nav>
+        </div>
+      </header>
+
+      <section class="hero wrap">
+        <div class="hero-text">
+          <h1>다녀온 곳을<br />사진으로 채우는 전국 지도</h1>
+          <p>
+            캠핑장·여행지·맛집처럼 <b class="hl">주제를 정해 지도</b>를 만들고, 다녀온 시·군을
+            누르면 <b class="hl">사진이 그 지역 모양대로</b> 들어가요.
+            <b class="hl">전국 167개 지역</b>을 하나씩 채워 보세요.
+          </p>
+          <ul class="perks">
+            <li>로그인 없음</li>
+            <li>사진은 내 폰에만</li>
+            <li>파일 하나로 백업</li>
+          </ul>
+          <div class="stores">
+            <a href="https://apps.apple.com/kr/app/id6826815134"
+              ><img
+                src="img/appstore-ko.svg"
+                alt="App Store에서 다운로드하기"
+                width="169"
+                height="52"
+            /></a>
+            <span class="soon"
+              ><img
+                src="img/googleplay-ko.webp"
+                alt="Google Play에서 다운로드(준비 중)"
+                width="175"
+                height="52"
+              /><em>준비 중</em></span
+            >
+          </div>
+        </div>
+        <div class="devices">
+          <div class="phone back">
+            <img src="img/06.webp" alt="'여행지' 공유 이미지" width="540" height="1173" />
+          </div>
+          <div class="phone front">
+            <img src="img/01.webp" alt="사진으로 채운 '여행지' 지도" width="540" height="1173" />
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <main id="features">
+      <section class="feature">
+        <div class="wrap">
+          <div class="text">
+            <div class="eyebrow">세 번 눌러 한 지역</div>
+            <h2>지역을 누르고,<br />사진을 고르거나 찍어요.</h2>
+            <p>
+              고른 사진은 그 지역에서 가장 큰 땅에 자동으로 맞춰져요. 원하면 위치와 크기를 직접 옮길
+              수 있어요.
+            </p>
+            <p>사진첩 접근 권한 없이, 고른 사진만 앱에 들어와요.</p>
+          </div>
+          <div class="phone">
+            <img
+              src="img/04.webp"
+              alt="빈 지역 봉화군을 누른 화면"
+              width="540"
+              height="1173"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section class="feature">
+        <div class="wrap">
+          <div class="text">
+            <div class="eyebrow">사진 여러 장</div>
+            <h2>한 지역에<br />추억 여러 장.</h2>
+            <p>지도에는 대표 사진 한 장이 보이고, 크게 보기에서 그 지역의 사진을 넘겨 봐요.</p>
+          </div>
+          <div class="phone">
+            <img
+              src="img/03.webp"
+              alt="안동시 사진을 넘겨 보는 화면"
+              width="540"
+              height="1173"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section class="feature">
+        <div class="wrap">
+          <div class="text">
+            <div class="eyebrow">진행률</div>
+            <h2>전국 167곳,<br />어디까지 채웠나요?</h2>
+            <p>시·도별로 얼마나 채웠는지 보고, 빈 지역 이름을 누르면 지도에서 바로 열려요.</p>
+          </div>
+          <div class="phone">
+            <img
+              src="img/05.webp"
+              alt="시·도별 진행률 화면"
+              width="540"
+              height="1173"
+              loading="lazy"
+            />
+          </div>
+          <div class="chips">
+            <span>58 / 167</span><span>시·도별 진행률</span><span>채운 지역</span
+            ><span>빈 지역</span><span>지역 바로 열기</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="more wrap">
+        <h2>그 밖에도…</h2>
+        <div class="grid">
+          <div>
+            <h3>주제마다 지도 한 장</h3>
+            <p>캠핑·여행지·맛집·카페, 지도는 여러 개 만들 수 있어요.</p>
+          </div>
+          <div>
+            <h3>채운 지도를 이미지로</h3>
+            <p>진행률을 담은 세로 이미지를 메신저·SNS로 바로 보내요.</p>
+          </div>
+          <div>
+            <h3>8배까지 확대</h3>
+            <p>두 손가락으로 확대해 작은 지역도 쉽게 눌러요.</p>
+          </div>
+          <div>
+            <h3>그 자리에서 사진 찍기</h3>
+            <p>찍은 사진은 지도에 들어가고 사진첩에도 저장돼요.</p>
+          </div>
+          <div>
+            <h3>폰을 바꿔도 그대로</h3>
+            <p>백업 파일 하나로 모든 지도와 사진을 되살려요.</p>
+          </div>
+          <div>
+            <h3>다크 모드</h3>
+            <p>밤에도 눈부시지 않게 봐요.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta" id="video">
+        <div class="text">
+          <h2>다녀온 곳부터<br />하나씩 채워 보세요.</h2>
+          <ul class="perks">
+            <li>로그인 없음</li>
+            <li>사진은 내 폰에만</li>
+            <li>파일 하나로 백업</li>
+          </ul>
+          <div class="stores">
+            <a href="https://apps.apple.com/kr/app/id6826815134"
+              ><img
+                src="img/appstore-ko.svg"
+                alt="App Store에서 다운로드하기"
+                width="169"
+                height="52"
+            /></a>
+            <span class="soon"
+              ><img
+                src="img/googleplay-ko.webp"
+                alt="Google Play에서 다운로드(준비 중)"
+                width="175"
+                height="52"
+              /><em>준비 중</em></span
+            >
+          </div>
+        </div>
+        <button
+          class="video"
+          type="button"
+          aria-label="26초 소개 영상 재생"
+          onclick="
+            this.innerHTML =
+              '<iframe src=&quot;https://www.youtube-nocookie.com/embed/af4S0G4jB4U?autoplay=1&amp;playsinline=1&quot; title=&quot;조각지도 소개 영상&quot; allow=&quot;autoplay; encrypted-media; picture-in-picture&quot; allowfullscreen></iframe>'
+          "
+        >
+          <img src="img/poster.webp" alt="" width="300" height="533" loading="lazy" />
+          <span class="play">▶</span>
+        </button>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <div><b>조각지도</b> · 지도 자료: 통계청 SGIS, vuski/admdongkor(CC BY 4.0)</div>
+        <nav>
+          <a href="https://sites.google.com/view/mapquilt">개인정보처리방침</a>
+          <a href="mailto:ovsoce@gmail.com">문의</a>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>
