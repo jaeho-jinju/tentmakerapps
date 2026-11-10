@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>독립운동가 - 대한민국 독립운동가</title>
+    <meta
+      name="description"
+      content="국가보훈부 공훈록의 독립운동가 19,000여 명을 이름·초성으로 찾아 공적을 원문 그대로 읽는 앱입니다. 인터넷 없이도 됩니다."
+    />
+    <meta property="og:title" content="독립운동가 - 대한민국 독립운동가" />
+    <meta
+      property="og:description"
+      content="국가보훈부 공훈록의 독립운동가 19,000여 명을 이름·초성으로 찾아 공적을 원문 그대로 읽는 앱입니다. 인터넷 없이도 됩니다."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tentmakerapps.com/activist/" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:image" content="https://tentmakerapps.com/activist/img/og.jpg" />
+    <meta property="og:image:width" content="1024" />
+    <meta property="og:image:height" content="500" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://tentmakerapps.com/activist/" />
+    <link rel="icon" href="img/icon-180.png" />
+    <link rel="apple-touch-icon" href="img/icon-180.png" />
+    <link rel="preload" as="image" href="img/01.webp" />
+    <style>
+      :root {
+        --ink: #1c1917;
+        --red: #b91c1c;
+        --muted: #57534e;
+        --mist: #f5f5f4;
+        --line: #e7e5e4;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+        color: var(--ink);
+        line-height: 1.6;
+        word-break: keep-all;
+        background: #fff;
+      }
+      a {
+        color: inherit;
+      }
+      .wrap {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      b.hl {
+        color: var(--red);
+      }
+
+      /* 머리 */
+      header .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 88px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+      .brand img {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        box-shadow: 0 0 0 1px var(--line);
+      }
+      .brand b {
+        display: block;
+        font-size: 18px;
+        line-height: 1.1;
+      }
+      .brand small {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      header nav {
+        display: flex;
+        gap: 28px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      header nav a {
+        text-decoration: none;
+      }
+
+      /* 첫 화면: 옅은 붉은 빛 */
+      .top {
+        background: radial-gradient(60% 70% at 65% 45%, #f6e4e1 0%, #fbf3f1 45%, #fff 85%);
+      }
+      .hero {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+        padding: 40px 24px 96px;
+      }
+      .hero-text {
+        flex: 1;
+        max-width: 540px;
+      }
+      .hero h1 {
+        font-size: 46px;
+        line-height: 1.22;
+        letter-spacing: -0.03em;
+        margin: 0 0 20px;
+      }
+      .hero p {
+        font-size: 17px;
+        color: var(--muted);
+        margin: 0 0 20px;
+      }
+      .perks {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 0 0 28px;
+        padding: 0;
+      }
+      .perks li {
+        font-size: 13px;
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: #fff;
+        border: 1px solid #ecd3cf;
+      }
+      .perks li::before {
+        content: "✓ ";
+        color: var(--red);
+      }
+      .stores {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+      .stores img {
+        display: block;
+        height: 52px;
+        width: auto;
+      }
+      .notice {
+        margin: 20px 0 0;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      /* 기울인 휴대폰 */
+      .phone {
+        width: 250px;
+        border: 8px solid #f4f4f3;
+        border-radius: 40px;
+        overflow: hidden;
+        background: #f4f4f3;
+        box-shadow:
+          0 0 0 1px #dcd9d6,
+          0 30px 60px rgb(28 25 23 / 0.16);
+      }
+      .phone img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 32px;
+      }
+      .devices {
+        flex: 1;
+        position: relative;
+        height: 600px;
+      }
+      .devices .phone {
+        position: absolute;
+      }
+      .devices .back {
+        right: 30px;
+        top: 70px;
+        width: 220px;
+        transform: rotate(9deg);
+      }
+      .devices .front {
+        left: 40px;
+        top: 0;
+        transform: rotate(-5deg);
+      }
+
+      /* 기능 */
+      .feature {
+        padding: 72px 0;
+      }
+      .feature:nth-of-type(even) {
+        background: #fafaf9;
+      }
+      .feature .wrap {
+        display: flex;
+        align-items: center;
+        gap: 64px;
+      }
+      .feature .text {
+        flex: 1;
+        max-width: 460px;
+        margin-left: 6%;
+      }
+      .eyebrow {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--red);
+        margin-bottom: 6px;
+      }
+      .feature h2 {
+        font-size: 36px;
+        line-height: 1.28;
+        letter-spacing: -0.02em;
+        margin: 0 0 16px;
+      }
+      .feature p {
+        color: var(--muted);
+        margin: 0 0 12px;
+      }
+      .feature .phone {
+        width: 230px;
+        transform: rotate(4deg);
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        max-width: 260px;
+      }
+      .chips span {
+        font-size: 12px;
+        font-weight: 600;
+        color: #fff;
+        background: var(--red);
+        padding: 3px 10px;
+        border-radius: 999px;
+      }
+
+      /* 그 밖에도 */
+      .more {
+        padding: 72px 24px 40px;
+      }
+      .more h2 {
+        text-align: center;
+        font-size: 32px;
+        margin: 0 0 40px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px 40px;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      .grid h3 {
+        font-size: 16px;
+        margin: 0 0 4px;
+      }
+      .grid p {
+        margin: 0;
+        font-size: 15px;
+        color: var(--muted);
+      }
+
+      /* 알아 두기 */
+      .facts {
+        max-width: 900px;
+        margin: 56px auto 0;
+        padding: 28px 32px;
+        border-radius: 20px;
+        background: var(--mist);
+      }
+      .facts h2 {
+        font-size: 20px;
+        text-align: left;
+        margin: 0 0 12px;
+      }
+      .facts ul {
+        margin: 0;
+        padding-left: 20px;
+        color: var(--muted);
+        font-size: 15px;
+      }
+      .facts li + li {
+        margin-top: 4px;
+      }
+
+      /* 마지막 받기 카드 */
+      .cta {
+        margin: 56px auto 0;
+        max-width: 1000px;
+        border-radius: 28px;
+        padding: 56px;
+        color: #fff;
+        background: linear-gradient(160deg, #1c1917 0%, #2e2421 55%, #7f1d1d 100%);
+        display: flex;
+        align-items: center;
+        gap: 48px;
+      }
+      .cta .text {
+        flex: 1;
+      }
+      .cta h2 {
+        font-size: 34px;
+        line-height: 1.25;
+        margin: 0 0 24px;
+      }
+      .cta .perks li {
+        background: rgb(255 255 255 / 0.1);
+        border-color: rgb(255 255 255 / 0.35);
+      }
+      .cta .perks li::before {
+        color: #fff;
+      }
+      .video {
+        flex: none;
+        width: 240px;
+        aspect-ratio: 9 / 16;
+        border-radius: 20px;
+        overflow: hidden;
+        background: #000;
+        position: relative;
+        border: 0;
+        padding: 0;
+        cursor: pointer;
+      }
+      .video img,
+      .video iframe {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        object-fit: cover;
+      }
+      .video .play {
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: rgb(0 0 0 / 0.55);
+        color: #fff;
+        font-size: 26px;
+        line-height: 64px;
+        text-align: center;
+      }
+
+      footer {
+        padding: 56px 0 48px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      footer .wrap {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+      footer p {
+        margin: 0 0 6px;
+        max-width: 720px;
+      }
+      footer nav {
+        display: flex;
+        gap: 20px;
+      }
+
+      /* 휴대폰 폭 */
+      @media (max-width: 760px) {
+        header nav {
+          display: none;
+        }
+        header .wrap {
+          height: 72px;
+        }
+        .hero {
+          flex-direction: column;
+          text-align: center;
+          padding: 16px 24px 40px;
+          gap: 24px;
+        }
+        .hero h1 {
+          font-size: 32px;
+        }
+        .hero p {
+          font-size: 16px;
+        }
+        .perks,
+        .stores {
+          justify-content: center;
+        }
+        .stores {
+          gap: 10px;
+        }
+        .stores img {
+          height: 46px;
+        }
+        .devices {
+          width: 100%;
+          height: 420px;
+          flex: none;
+        }
+        .devices .front {
+          width: 190px;
+          left: calc(50% - 150px);
+        }
+        .devices .back {
+          width: 170px;
+          right: calc(50% - 160px);
+          top: 50px;
+        }
+        .feature {
+          padding: 48px 0;
+        }
+        .feature .wrap {
+          flex-direction: column;
+          gap: 28px;
+          text-align: center;
+        }
+        .feature .text {
+          margin: 0;
+        }
+        .feature h2 {
+          font-size: 27px;
+        }
+        .feature .phone {
+          width: 190px;
+        }
+        .chips {
+          justify-content: center;
+          max-width: none;
+        }
+        .more h2 {
+          font-size: 26px;
+        }
+        .grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 24px 20px;
+        }
+        .facts {
+          margin: 40px 16px 0;
+          padding: 24px 20px;
+        }
+        .cta {
+          margin: 32px 16px 0;
+          padding: 40px 16px;
+          flex-direction: column;
+          text-align: center;
+          gap: 32px;
+        }
+        .cta h2 {
+          font-size: 26px;
+        }
+        .video {
+          width: 200px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top">
+      <header>
+        <div class="wrap">
+          <a class="brand" href="#">
+            <img src="img/icon.webp" alt="" width="40" height="40" />
+            <span><b>독립운동가</b><small>대한민국 독립운동가</small></span>
+          </a>
+          <nav>
+            <a href="#features">기능</a>
+            <a href="#video">영상</a>
+            <a href="mailto:ovsoce@gmail.com">문의</a>
+          </nav>
+        </div>
+      </header>
+
+      <section class="hero wrap">
+        <div class="hero-text">
+          <h1>독립운동가 19,000여 명,<br />공적을 원문 그대로</h1>
+          <p>
+            국가보훈부 「독립유공자 공훈록」의 독립운동가를 <b class="hl">이름·초성</b>으로 찾고,
+            공훈록에 실린 <b class="hl">공적 전문</b>을 요약 없이 읽어요. 공훈록 전체가 앱에 들어
+            있어 <b class="hl">인터넷 없이도</b> 돼요.
+          </p>
+          <ul class="perks">
+            <li>로그인 없음</li>
+            <li>인터넷 없이 검색</li>
+            <li>원문 출처 표시</li>
+          </ul>
+          <div class="stores">
+            <a href="https://apps.apple.com/kr/app/id6813839153"
+              ><img
+                src="img/appstore-ko.svg"
+                alt="App Store에서 다운로드하기"
+                width="169"
+                height="52"
+            /></a>
+            <a href="https://play.google.com/store/apps/details?id=io.github.ovso.activist"
+              ><img
+                src="img/googleplay-ko.webp"
+                alt="Google Play에서 다운로드하기"
+                width="175"
+                height="52"
+            /></a>
+          </div>
+          <p class="notice">
+            국가보훈부 공훈전자사료관이 공공누리 제1유형으로 개방한 자료를 이용합니다. 국가보훈부와
+            관계없는 개인 제작 앱입니다.
+          </p>
+        </div>
+        <div class="devices">
+          <div class="phone back">
+            <img src="img/04.webp" alt="유관순 상세 화면" width="540" height="1174" />
+          </div>
+          <div class="phone front">
+            <img src="img/01.webp" alt="독립운동가 목록 화면" width="540" height="1174" />
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <main id="features">
+      <section class="feature">
+        <div class="wrap">
+          <div class="text">
+            <div class="eyebrow">초성 검색</div>
+            <h2>이름이 가물가물해도<br />초성으로 찾아요.</h2>
+            <p>이름이나 이명의 일부로 검색하고, 초성(ㄱㄱ → 김구)으로도 찾아요.</p>
+          </div>
+          <div class="phone">
+            <img
+              src="img/02.webp"
+              alt="초성 ㄱㄱ으로 검색한 화면"
+              width="540"
+              height="1174"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section class="feature">
+        <div class="wrap">
+          <div class="text">
+            <div class="eyebrow">거르기</div>
+            <h2>훈격·운동계열·성별로<br />좁혀 봐요.</h2>
+            <p>
+              3·1운동·의병·광복군·임시정부처럼 운동계열로 거르고, 외국인 독립운동가만 따로 볼 수도
+              있어요.
+            </p>
+          </div>
+          <div class="phone">
+            <img
+              src="img/03.webp"
+              alt="운동계열 광복군으로 거른 화면"
+              width="540"
+              height="1174"
+              loading="lazy"
+            />
+          </div>
+          <div class="chips">
+            <span>대한민국장</span><span>대통령장</span><span>독립장</span><span>애국장</span
+            ><span>애족장</span><span>건국포장</span><span>대통령표창</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="feature">
+        <div class="wrap">
+          <div class="text">
+            <div class="eyebrow">이달의 독립운동가</div>
+            <h2>1992년부터 달마다<br />선정된 독립운동가.</h2>
+            <p>연월을 골라 그 달의 독립운동가를 보고, 2025년의 이달의 독립운동(사건·단체)도 읽어요.</p>
+          </div>
+          <div class="phone">
+            <img
+              src="img/05.webp"
+              alt="이달의 독립운동가 화면"
+              width="540"
+              height="1174"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section class="more wrap">
+        <h2>그 밖에도…</h2>
+        <div class="grid">
+          <div>
+            <h3>오늘의 독립운동가</h3>
+            <p>오늘 태어났거나 세상을 떠난 독립운동가를 홈에서 보여 줘요.</p>
+          </div>
+          <div>
+            <h3>한눈에 보는 정보</h3>
+            <p>한자 이름·이명, 생년월일·사망년월일, 본적, 훈격과 포상년도를 함께 봐요.</p>
+          </div>
+          <div>
+            <h3>즐겨찾기</h3>
+            <p>다시 볼 독립운동가를 모아 둬요. 최근 본 독립운동가도 남아요.</p>
+          </div>
+          <div>
+            <h3>공유·원문 보기</h3>
+            <p>상세에서 공유하고, 공훈전자사료관 원문과 네이버 검색으로 넘어가요.</p>
+          </div>
+          <div>
+            <h3>인터넷 없이</h3>
+            <p>검색과 열람은 오프라인에서도 돼요. 사진과 올해의 이달의 독립운동가만 인터넷으로 가져와요.</p>
+          </div>
+          <div>
+            <h3>다크 모드</h3>
+            <p>기기 설정을 따라 밤에도 눈부시지 않게 봐요.</p>
+          </div>
+        </div>
+
+        <div class="facts">
+          <h2>알아 두세요</h2>
+          <ul>
+            <li>공적은 공훈록 본문을 요약이나 평가 없이 그대로 보여 줘요.</li>
+            <li>
+              생년월일·사망년월일은 원문 표기 그대로예요. 괄호로 묶인 날짜와 '미상'은 원문이 그렇게
+              적은 것이에요.
+            </li>
+            <li>공훈록이 갱신되면 앱 업데이트로 반영해요.</li>
+            <li>자료의 정정은 공훈전자사료관에 요청해 주세요.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="cta" id="video">
+        <div class="text">
+          <h2>오늘 태어난 독립운동가부터<br />만나 보세요.</h2>
+          <ul class="perks">
+            <li>로그인 없음</li>
+            <li>인터넷 없이 검색</li>
+            <li>원문 출처 표시</li>
+          </ul>
+          <div class="stores">
+            <a href="https://apps.apple.com/kr/app/id6813839153"
+              ><img
+                src="img/appstore-ko.svg"
+                alt="App Store에서 다운로드하기"
+                width="169"
+                height="52"
+            /></a>
+            <a href="https://play.google.com/store/apps/details?id=io.github.ovso.activist"
+              ><img
+                src="img/googleplay-ko.webp"
+                alt="Google Play에서 다운로드하기"
+                width="175"
+                height="52"
+            /></a>
+          </div>
+        </div>
+        <button
+          class="video"
+          type="button"
+          aria-label="27초 소개 영상 재생"
+          onclick="
+            this.innerHTML =
+              '<iframe src=&quot;https://www.youtube-nocookie.com/embed/BWWIx0hUwBw?autoplay=1&amp;playsinline=1&quot; title=&quot;독립운동가 소개 영상&quot; allow=&quot;autoplay; encrypted-media; picture-in-picture&quot; allowfullscreen></iframe>'
+          "
+        >
+          <img src="img/poster.webp" alt="" width="300" height="533" loading="lazy" />
+          <span class="play">▶</span>
+        </button>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <div>
+          <p>
+            <b>독립운동가</b> · 원문 출처:
+            <a href="https://e-gonghun.mpva.go.kr">공훈전자사료관(국가보훈부)</a>, 공공누리 제1유형
+          </p>
+          <p>
+            국가보훈부 공훈전자사료관이 공공누리 제1유형으로 개방한 자료를 이용합니다. 국가보훈부와
+            관계없는 개인 제작 앱입니다.
+          </p>
+        </div>
+        <nav>
+          <a href="https://sites.google.com/view/newactivist">개인정보처리방침</a>
+          <a href="mailto:ovsoce@gmail.com">문의</a>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

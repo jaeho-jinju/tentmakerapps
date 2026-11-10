@@ -1,0 +1,181 @@
+# 독립운동가 사실 목록
+#
+# 매일 쓰는 글은 이 파일에 있는 사실만 쓴다. 글에 쓴 사실은 id로 밝히고, 검사 스크립트가 이 파일과 대조한다.
+# 기능이나 스토어 상태가 바뀌면 이 파일부터 고친다.
+#
+# 이 앱은 국가보훈부 공훈록을 원문 그대로 보여 주는 열람 앱이다. 앱은 공적을 요약하거나 평가하지 않는다.
+# 글도 같은 원칙을 따른다. 특정 독립운동가의 생애·공적·역사 이야기는 쓰지 않는다(검사로 사실을 확인할 수 없다).
+#
+# source 적는 법
+#   activist:<경로>        jaeho-jinju/activist 저장소의 파일
+#   tentmakerapps:<경로>   이 저장소의 파일
+
+checked: "2026-11-10"
+
+app:
+  name: 독립운동가
+  tagline: 대한민국 독립운동가
+  developer: TheTentmaker
+  page: https://tentmakerapps.com/activist/
+  app_store: https://apps.apple.com/kr/app/id6813839153
+  google_play: https://play.google.com/store/apps/details?id=io.github.ovso.activist
+  privacy: https://sites.google.com/view/newactivist
+
+facts:
+  - id: unofficial
+    fact: 국가보훈부 공훈전자사료관이 공공누리 제1유형으로 개방한 「독립유공자 공훈록」·「이달의 독립운동가」 자료를 이용하는 앱이고, 국가보훈부와 관계없는 개인 제작 앱이다.
+    source:
+      - activist:docs/store-listing.md §2.2 첫 문단
+      - activist:docs/adr/0002-bundled-sqlite-hybrid-data-sourcing.md §7
+
+  - id: stores
+    fact: iPhone과 안드로이드 앱이고, App Store와 Google Play에서 받을 수 있다.
+    source:
+      - App Store 조회 API(2026-11-10, 버전 26.40.0)
+      - Google Play 앱 페이지(2026-11-10, 응답 200)
+
+  - id: free-ads
+    fact: 무료 앱이고 광고가 있다.
+    source:
+      - activist:docs/store-listing.md §2.2 광고와 개인정보, §3.3 광고
+
+  - id: no-login
+    fact: 회원가입이나 로그인이 없고 개인정보를 입력받지 않는다. 즐겨찾기는 기기 안에만 저장된다.
+    source:
+      - activist:docs/store-listing.md §2.2 광고와 개인정보
+
+  - id: korea-only
+    fact: 한국어 앱이고 대한민국에서만 배포한다.
+    source:
+      - activist:docs/store-listing.md §2 기본 언어, §4 배포 국가
+
+  - id: activists-count
+    fact: 앱에는 공훈록에 실린 독립운동가 19,000여 명이 들어 있다.
+    source:
+      - activist:assets/db/version.json activists 19058(2026-09-19 자료)
+      - activist:docs/store-listing.md §2 규칙("19,000여 명")
+
+  - id: offline
+    fact: 공훈록 전체가 앱에 들어 있어 검색과 열람에 인터넷이 필요 없다. 사진과 올해의 이달의 독립운동가만 인터넷으로 가져온다.
+    source:
+      - activist:docs/store-listing.md §2.2 인터넷 없이도 됩니다
+      - activist:docs/adr/0002-bundled-sqlite-hybrid-data-sourcing.md
+
+  - id: data-update
+    fact: 공훈록이 갱신되면 앱 업데이트로 반영한다.
+    source:
+      - activist:docs/store-listing.md §2.2 인터넷 없이도 됩니다
+
+  - id: search
+    fact: 이름이나 이명의 일부로 독립운동가를 찾는다. 한자 이름과 공적 본문은 검색하지 않는다.
+    source:
+      - activist:CONTEXT.md 검색
+
+  - id: chosung
+    fact: 이름의 초성으로도 찾는다. 예를 들어 ㄱㄱ을 치면 김구도 나온다.
+    source:
+      - activist:CONTEXT.md 검색(ㄱㄱ → 김구)
+      - activist:docs/store-listing.md §2.2 이렇게 찾습니다
+
+  - id: filters
+    fact: 훈격·운동계열·성별·외국인으로 목록을 거른다. 외국인을 고르면 외국인 독립운동가만 본다.
+    source:
+      - activist:docs/store-listing.md §2.2 이렇게 찾습니다
+      - activist:CONTEXT.md 외국인
+
+  - id: grades
+    fact: 훈격은 대한민국장·대통령장·독립장·애국장·애족장·건국포장·대통령표창, 7가지다.
+    source:
+      - activist:assets/db/activist.db activist.grade(7종, 2026-09-19 자료)
+      - activist:CONTEXT.md 훈격
+
+  - id: lines
+    fact: 운동계열은 3·1운동·의병·광복군·임시정부·만주방면처럼 17가지로 나뉜다.
+    source:
+      - activist:assets/db/activist.db activist.line(17종, 2026-09-19 자료)
+      - activist:CONTEXT.md 운동계열
+
+  - id: detail
+    fact: 상세에서 이름·한자 이름·이명, 생년월일·사망년월일, 본적, 훈격·포상년도·운동계열과 공적을 본다.
+    source:
+      - activist:docs/store-listing.md §2.2 무엇을 볼 수 있나요
+
+  - id: verbatim
+    fact: 공적은 공훈록 본문을 요약이나 평가 없이 그대로 보여 준다.
+    source:
+      - activist:docs/store-listing.md §2.2 원문 그대로 보여줍니다
+
+  - id: dates-as-written
+    fact: 생년월일·사망년월일은 원문 표기 그대로다. 괄호로 묶인 날짜와 '미상'은 원문이 그렇게 적은 것이다.
+    source:
+      - activist:docs/store-listing.md §2.2 원문 그대로 보여줍니다
+
+  - id: share-source
+    fact: 상세에서 공유하고, 공훈전자사료관의 원문을 열어 볼 수 있다.
+    source:
+      - activist:docs/store-listing.md §2.2 이렇게 찾습니다
+      - activist:CONTEXT.md 원문 보기
+
+  - id: monthly
+    fact: 이달의 독립운동가는 1992년부터 달마다 선정된 독립운동가다. 이달의 독립운동가 탭에서 연월을 골라 그 달의 독립운동가를 본다.
+    source:
+      - activist:docs/store-listing.md §2.2 무엇을 볼 수 있나요
+      - activist:assets/db/activist.db monthly(1992년부터)
+
+  - id: monthly-2025
+    fact: 2025년의 이달의 독립운동(사건·단체) 12건도 이달의 독립운동가 탭에서 읽는다.
+    source:
+      - activist:CONTEXT.md 이달의 독립운동
+      - activist:assets/db/activist.db monthly kind=event(12건)
+
+  - id: today
+    fact: 홈의 오늘의 독립운동가는 생년월일이나 사망년월일이 오늘과 같은 독립운동가를 보여 준다.
+    source:
+      - activist:docs/store-listing.md §2.2 무엇을 볼 수 있나요
+      - activist:CONTEXT.md 오늘의 독립운동가
+
+  - id: favorites
+    fact: 즐겨찾기와 최근 본 독립운동가로 다시 볼 독립운동가를 모아 둔다.
+    source:
+      - activist:docs/store-listing.md §2.2 이렇게 찾습니다
+
+  - id: dark-mode
+    fact: 다크 모드는 기기 설정을 따른다.
+    source:
+      - activist:docs/store-listing.md §2.2 이렇게 찾습니다
+
+  - id: corrections
+    fact: 공훈록 자료의 정정은 공훈전자사료관에 요청한다. 앱 표시 오류나 문의는 개발자 이메일로 받는다.
+    source:
+      - activist:docs/store-listing.md §2.2 원문 그대로 보여줍니다
+
+avoid:
+  - id: no-person-stories
+    rule: 특정 독립운동가의 생애·공적·평가와 역사 이야기를 쓰지 않는다. 사람 이름은 사실 목록에 나온 예(김구)만 쓴다.
+    words: [순국하였, 순국했, 의거, 거사, 저격]
+    source:
+      - 이 파일 머리말(앱은 공훈록을 요약·평가하지 않는다)
+
+  - id: terms
+    rule: 앱의 용어를 쓴다. 사람은 '독립운동가', 날짜는 '생년월일·사망년월일', 글은 '공적'이다. '독립유공자'는 「독립유공자 공훈록」이라는 이름에만 쓴다.
+    words: [애국지사, 열사, 순국일, 서거일, 이달의 독립유공자, 이달의 인물, 오늘의 인물, 업적, 서훈등급]
+    source:
+      - activist:CONTEXT.md _Avoid_
+
+  - id: not-official
+    rule: 국가보훈부가 만든 앱처럼 쓰지 않는다. '국가보훈부'·'공훈전자사료관'은 출처를 말할 때만 쓴다.
+    words: [국가보훈부 앱, 보훈부 앱, 국가보훈부가 만든, 정부가 만든, 정부 앱, 공식 앱, 공식 제공]
+    source:
+      - activist:docs/store-listing.md §2 규칙('공식/정부/국가보훈부'는 출처 언급으로만)
+
+  - id: no-trademarks
+    rule: 남의 상표와 앱 이름을 쓰지 않는다.
+    words: [네이버, 카카오, 카톡, 유튜브, 인스타그램, 페이스북, 구글 검색]
+    source:
+      - tentmakerapps:apps/mapquilt/facts.yaml no-trademarks와 같은 원칙
+
+  - id: no-hype
+    rule: 앱을 치켜세우는 말과 순위·가격 문구를 쓰지 않는다.
+    words: [최고, 1위, 최초, 유일, 완벽, 가장 쉬운, 가장 좋은, 강력 추천, 필수 앱]
+    source:
+      - tentmakerapps:apps/mapquilt/facts.yaml no-hype와 같은 원칙
