@@ -1,0 +1,212 @@
+# 빠른단축번호 사실 목록
+#
+# 매일 쓰는 글은 이 파일에 있는 사실만 쓴다. 글에 쓴 사실은 id로 밝히고, 검사 스크립트가 이 파일과 대조한다.
+# 기능이나 스토어 상태가 바뀌면 이 파일부터 고친다.
+#
+# 이 앱은 탭마다 있는 칸에 이름·번호를 넣어 두고 칸을 눌러 전화를 거는 앱이다. 안드로이드와 아이폰에서 되는 일이 조금 다르다.
+# 바로 걸기·전화 권한·통화 뒤 앱 닫기는 안드로이드에만 있다. 그런 사실은 사실 문장 안에 '안드로이드에서'를 넣어 두었으니, 글에서도 빼지 않는다.
+#
+# source 적는 법
+#   hotkey:<경로>          jaeho-jinju/hotkey 저장소의 파일
+#   tentmakerapps:<경로>   이 저장소의 파일
+
+checked: "2026-11-10"
+
+app:
+  name: 빠른단축번호
+  tagline: 이름 칸을 누르면 전화
+  developer: TheTentmaker
+  page: https://tentmakerapps.com/hotkey/
+  app_store: https://apps.apple.com/kr/app/id6817888155
+  google_play: https://play.google.com/store/apps/details?id=kr.blogspot.ovsoce.hotkey
+  privacy: https://sites.google.com/view/hotkey-privacy
+
+facts:
+  - id: stores
+    fact: 아이폰과 안드로이드 앱이고, App Store와 Google Play에서 받을 수 있다.
+    source:
+      - App Store 조회 API(2026-11-10, 버전 26.40.0)
+      - Google Play 앱 페이지(2026-11-10, 응답 200)
+
+  - id: free-ads
+    fact: 무료 앱이고 광고가 있다.
+    source:
+      - hotkey:docs/store-listing.md §2.3 데이터, §4 광고, §8.5 가격
+
+  - id: no-login
+    fact: 회원가입·로그인·서버가 없고, 탭과 칸은 기기 안에만 저장된다.
+    source:
+      - hotkey:docs/store-listing.md §2.3 데이터
+      - hotkey:CONTEXT.md 머리말
+
+  - id: data-collected
+    fact: 배너 광고와 앱 이용 통계·오류 보고를 위해 Google 서비스가 정보를 수집한다. 자세한 내용은 개인정보처리방침에 있다.
+    source:
+      - hotkey:docs/store-listing.md §2.3 데이터
+      - hotkey:docs/privacy-policy.md 1항
+
+  - id: big-cells
+    fact: 가족·친구 이름을 색 칸에 크게 적어 두고, 칸을 눌러 전화를 건다. 이름만 보고 누르면 되어 부모님·어르신 폰에 두기 좋다.
+    source:
+      - hotkey:docs/store-listing.md §2.3 첫 문단, §8.2 설명 첫 문단
+
+  - id: cells-120
+    fact: 탭마다 칸은 120개이고 늘거나 줄지 않는다. 칸은 만들거나 지우는 것이 아니라 채우고 비우는 것이다.
+    source:
+      - hotkey:CONTEXT.md 칸
+      - hotkey:src/core/store/data.ts CELL_COUNT
+
+  - id: tabs
+    fact: 탭은 ＋로 더하고, 고른 탭을 한 번 더 누르면 이름·순서를 바꾸거나 지운다. 처음 설치하면 가족·친구·기타 탭 3개가 있다.
+    source:
+      - hotkey:docs/store-listing.md §2.3 이렇게 씁니다
+      - hotkey:CONTEXT.md 처음 탭
+
+  - id: colors
+    fact: 칸의 색은 인디고·분홍·주황·초록·청회색·청록·호박색·갈색·하늘색·빨강의 10색 중에서 고른다. 빈 칸도 제 색이 있다.
+    source:
+      - hotkey:CONTEXT.md 색, 빈 칸
+
+  - id: fill-cell
+    fact: 빈 칸을 누르면 이름·번호·색을 넣는다. 주소록에서 한 명을 골라 넣을 수도 있고, 이때도 연락처 권한은 쓰지 않는다.
+    source:
+      - hotkey:docs/store-listing.md §2.3 이렇게 씁니다, 권한
+      - hotkey:docs/store-listing.md §8.2 권한
+
+  - id: number-as-typed
+    fact: 번호는 입력한 그대로 저장된다. 01012345678, 010-1234-5678, +82-2-… 모두 된다.
+    source:
+      - hotkey:docs/store-listing.md §2.3 이렇게 씁니다
+      - hotkey:CONTEXT.md 이름 / 번호
+
+  - id: move-cell
+    fact: 칸 자리는 고치는 창의 [다른 자리로 옮기기]로 바꾼다. 두 칸이 자리를 서로 바꾸고, 어느 칸도 지워지지 않는다.
+    source:
+      - hotkey:docs/store-listing.md §2.3 이렇게 씁니다
+      - hotkey:CONTEXT.md 칸 옮기기
+
+  - id: sms
+    fact: 칸을 고치는 창에서 [문자 보내기]를 누르면 번호가 채워진 문자 앱이 열린다.
+    source:
+      - hotkey:CONTEXT.md 편집
+      - hotkey:src/features/home/EditDialog.tsx 문자 보내기
+
+  - id: call-android
+    fact: 안드로이드에서는 칸을 누르면 전화 앱을 거치지 않고 바로 전화가 걸린다. 전화 권한을 허용하지 않으면 번호가 채워진 전화 앱이 열린다.
+    source:
+      - hotkey:docs/store-listing.md §2.3 권한
+      - hotkey:CONTEXT.md 전화 걸기, 전화 권한
+
+  - id: call-ios
+    fact: 아이폰에서는 칸을 누르면 시스템이 전화를 걸지 한 번 더 묻는다. 아이폰 앱은 권한을 요청하지 않는다.
+    source:
+      - hotkey:docs/store-listing.md §8 Play 문안에서 바꾼 것, §8.2 권한
+      - hotkey:CONTEXT.md 전화 걸기
+
+  - id: long-press
+    fact: 설정에서 '길게 누르면 전화'로 바꾸면 칸을 길게 눌러야 전화가 걸리고, 짧게 누르면 칸을 고친다. 잘못 눌러 걸리는 일이 줄어든다.
+    source:
+      - hotkey:docs/store-listing.md §2.3 이렇게 씁니다
+      - hotkey:src/features/settings/SettingsScreen.tsx 전화 걸기
+
+  - id: voice
+    fact: 음성 안내를 켜면 전화를 걸기 전에 칸의 이름을 소리 내어 읽어 준다. 읽는 동안 [취소]를 누르면 걸지 않는다. 처음에는 꺼져 있다.
+    source:
+      - hotkey:docs/store-listing.md §2.3 주요 기능
+      - hotkey:CONTEXT.md 음성 안내
+
+  - id: close-after-call
+    fact: 안드로이드에서만 있는 '통화 뒤 앱 닫기'는 통화가 끝나면 폰 홈 화면이 나오게 해서, 주머니 속에서 다시 걸리는 일을 막는다. 새로 설치하면 켜져 있다.
+    source:
+      - hotkey:docs/store-listing.md §2.3 주요 기능
+      - hotkey:CONTEXT.md 통화 뒤 앱 닫기
+
+  - id: text-size
+    fact: 칸 글자 크기를 50%부터 200%까지 10%씩 고른다. 폰의 글자 크기와 상관없이 이 크기로 보인다.
+    source:
+      - hotkey:CONTEXT.md 글자 크기
+      - hotkey:src/features/settings/textSize.ts
+
+  - id: cells-per-row
+    fact: 한 줄 칸 수를 2·3·4·5칸 중에서 고른다. 기본은 3칸이고, 바꿔도 칸의 자리는 그대로다.
+    source:
+      - hotkey:CONTEXT.md 한 줄 칸 수
+
+  - id: emergency-71
+    fact: 긴급 전화번호 모음에 신고·상담 전화번호 71개가 있고, 112·119·110이 맨 위에 있다.
+    source:
+      - hotkey:src/features/emergency/directory.ts CATEGORIES 71개, TOP_THREE
+      - hotkey:docs/store-listing.md §2.3 주요 기능
+
+  - id: emergency-categories
+    fact: 긴급 전화번호 모음은 긴급, 생활정보, 민원 신고/상담, 아동, 청소년, 여성, 노인·장애인, 질병·중독, 가족의 9개 분야로 나뉜다.
+    source:
+      - hotkey:CONTEXT.md 분야
+      - hotkey:src/features/emergency/directory.ts CATEGORIES
+
+  - id: emergency-dialer
+    fact: 긴급 전화번호 모음의 항목을 누르면 늘 번호가 채워진 전화 앱이 열린다. 번호와 기관은 바뀔 수 있어서 화면 맨 아래에 마지막으로 확인한 날을 적어 둔다.
+    source:
+      - hotkey:CONTEXT.md 긴급 전화번호 모음, 기준일
+
+  - id: backup-file
+    fact: 폰을 바꿀 때 [백업 파일 보내기]로 탭·칸·설정을 파일 하나에 담아 가족이나 메일로 보내 두고, 새 폰에서 [백업 파일 불러오기]로 다시 넣는다.
+    source:
+      - hotkey:docs/store-listing.md §2.3 주요 기능
+      - hotkey:CONTEXT.md 백업 파일
+
+  - id: backup-replace
+    fact: 백업 파일을 불러오면 그 폰의 탭·칸·설정이 파일 내용으로 통째로 바뀌고, 덧붙지 않는다. 안드로이드와 아이폰 사이에도 옮길 수 있다.
+    source:
+      - hotkey:CONTEXT.md 백업 파일
+
+  - id: legacy
+    fact: 안드로이드의 예전 '단축번호 앱'을 새로 만든 앱이고, 예전 앱은 2016년에 처음 나왔다. 안드로이드에서 업데이트하면 넣어 둔 탭과 칸이 자리까지 그대로 남는다.
+    source:
+      - hotkey:docs/store-listing.md §2.3 첫 문단
+      - hotkey:docs/legacy-app.md 역사(2016-01 출시)
+      - hotkey:CONTEXT.md 데이터 옮기기
+
+avoid:
+  - id: terms
+    rule: 앱의 용어를 쓴다. 한 자리는 '칸', 칸의 묶음은 '탭', 손짓은 '누르기·길게 누르기', 기기 이전 파일은 '백업 파일'(보내기·불러오기), 번호 목록은 '긴급 전화번호 모음', 그 갈래는 '분야'다. 칸을 '연락처'라고 부르지 않는다.
+    words: [탭하면, 탭하세요, 탭해서, 롱탭, 터치, 클릭, 슬롯, 내보내기, 백업 가져오기, 복원, 동기화, 긴급번호, 긴급 탭, 카테고리, 자동종료, 자동 종료, TTS, 음성 인식, 폰트]
+    source:
+      - hotkey:CONTEXT.md _Avoid_
+
+  - id: platform
+    rule: 바로 걸기·전화 권한·통화 뒤 앱 닫기는 안드로이드에만 있다. 이 셋을 쓸 때는 '안드로이드에서'를 밝히고, 아이폰에서도 되는 것처럼 쓰지 않는다.
+    source:
+      - hotkey:CONTEXT.md 전화 걸기, 통화 뒤 앱 닫기
+      - hotkey:docs/store-listing.md §8 Play 문안에서 바꾼 것
+
+  - id: emergency-scope
+    rule: 긴급 전화번호 모음은 번호를 모아 둔 목록이고 항목을 누르면 전화 앱이 열릴 뿐이다. 앱이 신고를 접수하거나 대신 걸거나 위치를 보낸다고 쓰지 않는다.
+    words: [자동 신고, 자동으로 신고, 대신 신고, 위치 전송, 위치를 보내, 출동 요청, SOS]
+    source:
+      - hotkey:CONTEXT.md 긴급 전화번호 모음
+
+  - id: no-health-claims
+    rule: 어르신의 건강·안전을 지켜 준다는 식으로 쓰지 않는다. 앱은 전화를 거는 도구다.
+    words: [치매, 생명을 지켜, 안전을 지켜, 건강을 지켜, 응급 상황에서 구해]
+    source:
+      - hotkey:docs/store-listing.md §3.3 건강 앱(건강 기능 없음)
+
+  - id: privacy-accuracy
+    rule: 광고와 Google 서비스의 정보 수집이 있으니 광고가 없다거나 아무 정보도 수집하지 않는다고 쓰지 않는다.
+    words: [광고 없, 광고가 없, 무광고, 수집하지 않]
+    source:
+      - hotkey:docs/store-listing.md §2.3 데이터
+
+  - id: no-trademarks
+    rule: 남의 상표와 앱 이름을 쓰지 않는다. 백업 파일을 보낼 곳은 '가족이나 메일'이라고만 쓴다.
+    words: [네이버, 카카오, 카톡, 유튜브, 인스타그램, 페이스북, 지메일, Gmail, 갤럭시, 스마트 스위치, 구글 검색]
+    source:
+      - tentmakerapps:apps/mapquilt/facts.yaml no-trademarks와 같은 원칙
+
+  - id: no-hype
+    rule: 앱을 치켜세우는 말과 순위·가격 문구, 다른 앱과 견주는 말을 쓰지 않는다.
+    words: [최고, 1위, 최초, 유일, 완벽, 가장 쉬운, 가장 좋은, 강력 추천, 필수 앱]
+    source:
+      - tentmakerapps:apps/mapquilt/facts.yaml no-hype와 같은 원칙
+      - hotkey:docs/store-listing.md §2.3(다른 앱과 견주는 말 금지)

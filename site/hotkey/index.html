@@ -1,0 +1,717 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>빠른단축번호 - 누르면 전화·긴급 전화번호</title>
+    <meta
+      name="description"
+      content="가족·친구 이름을 큰 색 칸에 적어 두고 눌러서 전화하는 앱입니다. 긴급 전화번호 71개, 걸기 전 이름 음성 안내, 백업 파일까지 담았습니다."
+    />
+    <meta property="og:title" content="빠른단축번호 - 누르면 전화·긴급 전화번호" />
+    <meta
+      property="og:description"
+      content="가족·친구 이름을 큰 색 칸에 적어 두고 눌러서 전화하는 앱입니다. 긴급 전화번호 71개, 걸기 전 이름 음성 안내, 백업 파일까지 담았습니다."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tentmakerapps.com/hotkey/" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:image" content="https://tentmakerapps.com/hotkey/img/og.jpg" />
+    <meta property="og:image:width" content="1024" />
+    <meta property="og:image:height" content="500" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://tentmakerapps.com/hotkey/" />
+    <link rel="icon" href="img/icon-180.png" />
+    <link rel="apple-touch-icon" href="img/icon-180.png" />
+    <link rel="preload" as="image" href="img/01.webp" />
+    <style>
+      :root {
+        --ink: #1a237e;
+        --indigo: #3f51b5;
+        --yellow: #ffeb3b;
+        --muted: #4f5672;
+        --mist: #eef0fa;
+        --line: #e3e5f2;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+        color: var(--ink);
+        line-height: 1.6;
+        word-break: keep-all;
+        background: #fff;
+      }
+      a {
+        color: inherit;
+      }
+      .wrap {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      b.hl {
+        color: var(--indigo);
+      }
+      /* 노랑은 흰 바탕 글자로 쓰지 않고 형광펜 밑줄로만 쓴다 */
+      mark {
+        color: inherit;
+        background: linear-gradient(transparent 62%, var(--yellow) 62%);
+      }
+
+      /* 머리 */
+      header .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 88px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+      .brand img {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+      }
+      .brand b {
+        display: block;
+        font-size: 18px;
+        line-height: 1.1;
+      }
+      .brand small {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      header nav {
+        display: flex;
+        gap: 28px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      header nav a {
+        text-decoration: none;
+      }
+
+      /* 첫 화면: 옅은 인디고 빛 */
+      .top {
+        background: radial-gradient(60% 70% at 65% 45%, #dfe3f7 0%, #eef0fa 45%, #fff 85%);
+      }
+      .hero {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+        padding: 40px 24px 96px;
+      }
+      .hero-text {
+        flex: 1;
+        max-width: 540px;
+      }
+      .hero h1 {
+        font-size: 46px;
+        line-height: 1.22;
+        letter-spacing: -0.03em;
+        margin: 0 0 20px;
+      }
+      .hero p {
+        font-size: 17px;
+        color: var(--muted);
+        margin: 0 0 20px;
+      }
+      .perks {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 0 0 28px;
+        padding: 0;
+      }
+      .perks li {
+        font-size: 13px;
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: #fff;
+        border: 1px solid #cfd5f0;
+      }
+      .perks li::before {
+        content: "✓ ";
+        color: var(--indigo);
+      }
+      .stores {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+      .stores img {
+        display: block;
+        height: 52px;
+        width: auto;
+      }
+
+      /* 기울인 휴대폰 */
+      .phone {
+        width: 250px;
+        border: 8px solid #f3f4fa;
+        border-radius: 40px;
+        overflow: hidden;
+        background: #f3f4fa;
+        box-shadow:
+          0 0 0 1px #d6daee,
+          0 30px 60px rgb(26 35 126 / 0.16);
+      }
+      .phone img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 32px;
+      }
+      .devices {
+        flex: 1;
+        position: relative;
+        height: 600px;
+      }
+      .devices .phone {
+        position: absolute;
+      }
+      .devices .back {
+        right: 30px;
+        top: 70px;
+        width: 220px;
+        transform: rotate(9deg);
+      }
+      .devices .front {
+        left: 40px;
+        top: 0;
+        transform: rotate(-5deg);
+      }
+
+      /* 기능 */
+      .feature {
+        padding: 72px 0;
+      }
+      .feature:nth-of-type(even) {
+        background: #f7f8fc;
+      }
+      .feature .wrap {
+        display: flex;
+        align-items: center;
+        gap: 64px;
+      }
+      .feature .text {
+        flex: 1;
+        max-width: 460px;
+        margin-left: 6%;
+      }
+      .eyebrow {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--indigo);
+        margin-bottom: 6px;
+      }
+      .feature h2 {
+        font-size: 36px;
+        line-height: 1.28;
+        letter-spacing: -0.02em;
+        margin: 0 0 16px;
+      }
+      .feature p {
+        color: var(--muted);
+        margin: 0 0 12px;
+      }
+      .feature .phone {
+        width: 230px;
+        transform: rotate(4deg);
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        max-width: 260px;
+      }
+      .chips span {
+        font-size: 12px;
+        font-weight: 600;
+        color: #fff;
+        background: var(--indigo);
+        padding: 3px 10px;
+        border-radius: 999px;
+      }
+
+      /* 그 밖에도 */
+      .more {
+        padding: 72px 24px 40px;
+      }
+      .more h2 {
+        text-align: center;
+        font-size: 32px;
+        margin: 0 0 40px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px 40px;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      .grid h3 {
+        font-size: 16px;
+        margin: 0 0 4px;
+      }
+      .grid p {
+        margin: 0;
+        font-size: 15px;
+        color: var(--muted);
+      }
+
+      /* 알아 두기 */
+      .facts {
+        max-width: 900px;
+        margin: 56px auto 0;
+        padding: 28px 32px;
+        border-radius: 20px;
+        background: var(--mist);
+      }
+      .facts h2 {
+        font-size: 20px;
+        text-align: left;
+        margin: 0 0 12px;
+      }
+      .facts ul {
+        margin: 0;
+        padding-left: 20px;
+        color: var(--muted);
+        font-size: 15px;
+      }
+      .facts li + li {
+        margin-top: 4px;
+      }
+
+      /* 마지막 받기 카드 */
+      .cta {
+        margin: 56px auto 0;
+        max-width: 1000px;
+        border-radius: 28px;
+        padding: 56px;
+        color: #fff;
+        background: linear-gradient(160deg, #1a237e 0%, #283593 55%, #3f51b5 100%);
+        display: flex;
+        align-items: center;
+        gap: 48px;
+      }
+      .cta .text {
+        flex: 1;
+      }
+      .cta h2 {
+        font-size: 34px;
+        line-height: 1.25;
+        margin: 0 0 24px;
+      }
+      .cta h2 em {
+        font-style: normal;
+        color: var(--yellow);
+      }
+      .cta .perks li {
+        background: rgb(255 255 255 / 0.1);
+        border-color: rgb(255 255 255 / 0.35);
+      }
+      .cta .perks li::before {
+        color: var(--yellow);
+      }
+      .video {
+        flex: none;
+        width: 240px;
+        aspect-ratio: 9 / 16;
+        border-radius: 20px;
+        overflow: hidden;
+        background: #000;
+        position: relative;
+        border: 0;
+        padding: 0;
+        cursor: pointer;
+      }
+      .video img,
+      .video iframe {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        object-fit: cover;
+      }
+      .video .play {
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: rgb(0 0 0 / 0.55);
+        color: #fff;
+        font-size: 26px;
+        line-height: 64px;
+        text-align: center;
+      }
+
+      footer {
+        padding: 56px 0 48px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      footer .wrap {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+      footer p {
+        margin: 0 0 6px;
+        max-width: 720px;
+      }
+      footer nav {
+        display: flex;
+        gap: 20px;
+      }
+
+      /* 휴대폰 폭 */
+      @media (max-width: 760px) {
+        header nav {
+          display: none;
+        }
+        header .wrap {
+          height: 72px;
+        }
+        .hero {
+          flex-direction: column;
+          text-align: center;
+          padding: 16px 24px 40px;
+          gap: 24px;
+        }
+        .hero h1 {
+          font-size: 32px;
+        }
+        .hero p {
+          font-size: 16px;
+        }
+        .perks,
+        .stores {
+          justify-content: center;
+        }
+        .stores {
+          gap: 10px;
+        }
+        .stores img {
+          height: 46px;
+        }
+        .devices {
+          width: 100%;
+          height: 420px;
+          flex: none;
+        }
+        .devices .front {
+          width: 190px;
+          left: calc(50% - 150px);
+        }
+        .devices .back {
+          width: 170px;
+          right: calc(50% - 160px);
+          top: 50px;
+        }
+        .feature {
+          padding: 48px 0;
+        }
+        .feature .wrap {
+          flex-direction: column;
+          gap: 28px;
+          text-align: center;
+        }
+        .feature .text {
+          margin: 0;
+        }
+        .feature h2 {
+          font-size: 27px;
+        }
+        .feature .phone {
+          width: 190px;
+        }
+        .chips {
+          justify-content: center;
+          max-width: none;
+        }
+        .more h2 {
+          font-size: 26px;
+        }
+        .grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 24px 20px;
+        }
+        .facts {
+          margin: 40px 16px 0;
+          padding: 24px 20px;
+        }
+        .cta {
+          margin: 32px 16px 0;
+          padding: 40px 16px;
+          flex-direction: column;
+          text-align: center;
+          gap: 32px;
+        }
+        .cta h2 {
+          font-size: 26px;
+        }
+        .video {
+          width: 200px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top">
+      <header>
+        <div class="wrap">
+          <a class="brand" href="#">
+            <img src="img/icon.webp" alt="" width="40" height="40" />
+            <span><b>빠른단축번호</b><small>이름 칸을 누르면 전화</small></span>
+          </a>
+          <nav>
+            <a href="#features">기능</a>
+            <a href="#video">영상</a>
+            <a href="mailto:ovsoce@gmail.com">문의</a>
+          </nav>
+        </div>
+      </header>
+
+      <section class="hero wrap">
+        <div class="hero-text">
+          <h1><mark>엄마</mark> 칸을 누르면,<br />엄마에게 전화해요</h1>
+          <p>
+            가족·친구 이름을 <b class="hl">큰 색 칸</b>에 적어 두고, 칸을 눌러 전화하세요. 이름만
+            보고 누르면 되니 <b class="hl">부모님·어르신 폰</b>에 두기 좋아요. 탭마다 칸이
+            120개예요.
+          </p>
+          <ul class="perks">
+            <li>로그인 없음</li>
+            <li>기기 안에만 저장</li>
+            <li>백업 파일로 폰 이전</li>
+          </ul>
+          <div class="stores">
+            <a href="https://apps.apple.com/kr/app/id6817888155"
+              ><img
+                src="img/appstore-ko.svg"
+                alt="App Store에서 다운로드하기"
+                width="169"
+                height="52"
+            /></a>
+            <a href="https://play.google.com/store/apps/details?id=kr.blogspot.ovsoce.hotkey"
+              ><img
+                src="img/googleplay-ko.webp"
+                alt="Google Play에서 다운로드하기"
+                width="175"
+                height="52"
+            /></a>
+          </div>
+        </div>
+        <div class="devices">
+          <div class="phone back">
+            <img
+              src="img/05.webp"
+              alt="글자 200%, 한 줄 2칸으로 키운 홈 화면"
+              width="540"
+              height="1174"
+            />
+          </div>
+          <div class="phone front">
+            <img
+              src="img/01.webp"
+              alt="가족 탭에 엄마·아빠·할머니 칸이 있는 홈 화면"
+              width="540"
+              height="1174"
+            />
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <main id="features">
+      <section class="feature">
+        <div class="wrap">
+          <div class="text">
+            <div class="eyebrow">긴급 전화번호</div>
+            <h2>급할 때 찾는 번호,<br />71개를 한곳에.</h2>
+            <p>
+              112·119·110을 맨 위에 두고, 신고·상담 번호를 분야별로 모았어요. 항목을 누르면 번호가
+              채워진 전화 앱이 열려요.
+            </p>
+          </div>
+          <div class="phone">
+            <img
+              src="img/02.webp"
+              alt="112·119·110이 맨 위에 있는 긴급 전화번호 화면"
+              width="540"
+              height="1174"
+              loading="lazy"
+            />
+          </div>
+          <div class="chips">
+            <span>긴급</span><span>생활정보</span><span>민원 신고/상담</span><span>아동</span
+            ><span>청소년</span><span>여성</span><span>노인·장애인</span><span>질병·중독</span
+            ><span>가족</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="feature">
+        <div class="wrap">
+          <div class="text">
+            <div class="eyebrow">음성 안내</div>
+            <h2>걸기 전에<br />이름을 읽어 줘요.</h2>
+            <p>
+              누구에게 거는지 소리로 한 번 더 확인해요. 읽는 동안 [취소]를 누르면 걸지 않아요.
+              설정에서 켜요.
+            </p>
+          </div>
+          <div class="phone">
+            <img
+              src="img/03.webp"
+              alt="'엄마에게 전화합니다'와 취소 버튼이 뜬 음성 안내 화면"
+              width="540"
+              height="1174"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section class="feature">
+        <div class="wrap">
+          <div class="text">
+            <div class="eyebrow">백업 파일</div>
+            <h2>폰을 바꿔도<br />칸은 그대로.</h2>
+            <p>
+              탭·칸·설정을 파일 하나로 보내 두고, 새 폰에서 불러오면 돼요. 안드로이드와 아이폰
+              사이에도 옮길 수 있어요.
+            </p>
+          </div>
+          <div class="phone">
+            <img
+              src="img/04.webp"
+              alt="백업 파일 보내기 안내 창"
+              width="540"
+              height="1174"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section class="more wrap">
+        <h2>그 밖에도…</h2>
+        <div class="grid">
+          <div>
+            <h3>큰 글자</h3>
+            <p>칸 글자를 50%부터 200%까지, 한 줄을 2~5칸으로 골라요. 폰 글자 크기와 상관없어요.</p>
+          </div>
+          <div>
+            <h3>길게 누르면 전화</h3>
+            <p>잘못 눌리는 게 걱정되면 설정에서 바꿔요. 짧게 누르면 칸을 고쳐요.</p>
+          </div>
+          <div>
+            <h3>통화 뒤 앱 닫기</h3>
+            <p>통화가 끝나면 폰 홈 화면이 나와 주머니 속에서 다시 걸리지 않아요. 안드로이드에만 있어요.</p>
+          </div>
+          <div>
+            <h3>탭과 칸 옮기기</h3>
+            <p>탭은 ＋로 더하고 이름·순서를 바꿔요. 칸은 [다른 자리로 옮기기]로 자리를 바꿔요.</p>
+          </div>
+          <div>
+            <h3>주소록에서 가져오기</h3>
+            <p>주소록에서 고른 한 명으로 칸을 채워요. 연락처 권한은 쓰지 않아요.</p>
+          </div>
+          <div>
+            <h3>번호는 입력한 그대로</h3>
+            <p>01012345678, 010-1234-5678, +82-2-… 모두 돼요. 고치는 창에서 문자도 보내요.</p>
+          </div>
+        </div>
+
+        <div class="facts">
+          <h2>알아 두세요</h2>
+          <ul>
+            <li>
+              안드로이드에서는 칸을 누르면 바로 걸려요. 전화 권한을 허용하지 않으면 번호가 채워진 전화
+              앱이 열려요.
+            </li>
+            <li>아이폰에서는 칸을 누르면 전화를 걸지 한 번 더 물어요.</li>
+            <li>
+              긴급 전화번호는 공개된 번호를 모은 목록이에요. 앱이 신고를 받거나 대신하지 않고, 번호와
+              기관은 바뀔 수 있어요.
+            </li>
+            <li>
+              안드로이드에서 예전 '단축번호 앱'을 쓰셨다면, 업데이트해도 넣어 둔 탭과 칸이 자리까지
+              그대로 남아요.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="cta" id="video">
+        <div class="text">
+          <h2>부모님 폰에<br /><em>큰 이름 칸</em>을 만들어 드리세요.</h2>
+          <ul class="perks">
+            <li>로그인 없음</li>
+            <li>기기 안에만 저장</li>
+            <li>백업 파일로 폰 이전</li>
+          </ul>
+          <div class="stores">
+            <a href="https://apps.apple.com/kr/app/id6817888155"
+              ><img
+                src="img/appstore-ko.svg"
+                alt="App Store에서 다운로드하기"
+                width="169"
+                height="52"
+            /></a>
+            <a href="https://play.google.com/store/apps/details?id=kr.blogspot.ovsoce.hotkey"
+              ><img
+                src="img/googleplay-ko.webp"
+                alt="Google Play에서 다운로드하기"
+                width="175"
+                height="52"
+            /></a>
+          </div>
+        </div>
+        <button
+          class="video"
+          type="button"
+          aria-label="28초 소개 영상 재생"
+          onclick="
+            this.innerHTML =
+              '<iframe src=&quot;https://www.youtube-nocookie.com/embed/RH37K8mhUTg?autoplay=1&amp;playsinline=1&quot; title=&quot;빠른단축번호 소개 영상&quot; allow=&quot;autoplay; encrypted-media; picture-in-picture&quot; allowfullscreen></iframe>'
+          "
+        >
+          <img src="img/poster.webp" alt="" width="300" height="533" loading="lazy" />
+          <span class="play">▶</span>
+        </button>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <div>
+          <p><b>빠른단축번호</b> · TheTentmaker</p>
+          <p>
+            탭과 칸은 기기 안에만 저장돼요. 배너 광고와 앱 이용 통계·오류 보고를 위해 Google 서비스가
+            정보를 수집해요.
+          </p>
+        </div>
+        <nav>
+          <a href="https://sites.google.com/view/hotkey-privacy">개인정보처리방침</a>
+          <a href="mailto:ovsoce@gmail.com">문의</a>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>
