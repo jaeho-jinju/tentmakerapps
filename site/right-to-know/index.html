@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>어린이집 정보공개 - 법 위반 시설·보육교직원 공표</title>
+    <meta
+      name="description"
+      content="정부가 공표한 어린이집 법 위반 시설·보육교직원 정보를 지역별로 그대로 보여주는 비공식 앱입니다."
+    />
+    <meta property="og:title" content="어린이집 정보공개 - 법 위반 시설·보육교직원 공표" />
+    <meta
+      property="og:description"
+      content="정부가 공표한 어린이집 법 위반 시설·보육교직원 정보를 지역별로 그대로 보여주는 비공식 앱입니다."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tentmakerapps.com/right-to-know/" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:image" content="https://tentmakerapps.com/right-to-know/img/og.jpg" />
+    <meta property="og:image:width" content="1024" />
+    <meta property="og:image:height" content="500" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://tentmakerapps.com/right-to-know/" />
+    <link rel="icon" href="img/icon-180.png" />
+    <link rel="apple-touch-icon" href="img/icon-180.png" />
+    <link rel="preload" as="image" href="img/01.webp" />
+    <style>
+      :root {
+        --navy: #1e3a5f;
+        --teal: #2a9d8f;
+        --ink: #1f7a6f;
+        --muted: #55667a;
+        --mist: #e6f2f0;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+        color: var(--navy);
+        line-height: 1.6;
+        word-break: keep-all;
+        background: #fff;
+      }
+      a {
+        color: inherit;
+      }
+      .wrap {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      b.hl {
+        color: var(--ink);
+      }
+
+      /* 머리 */
+      header .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 88px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+      .brand img {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+      }
+      .brand b {
+        display: block;
+        font-size: 18px;
+        line-height: 1.1;
+      }
+      .brand small {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      header nav {
+        display: flex;
+        gap: 28px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      header nav a {
+        text-decoration: none;
+      }
+
+      /* 첫 화면: 옅은 틸 빛 */
+      .top {
+        background: radial-gradient(60% 70% at 65% 45%, #d3ebe7 0%, #ecf6f4 45%, #fff 85%);
+      }
+      .hero {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+        padding: 40px 24px 96px;
+      }
+      .hero-text {
+        flex: 1;
+        max-width: 540px;
+      }
+      .hero h1 {
+        font-size: 46px;
+        line-height: 1.22;
+        letter-spacing: -0.03em;
+        margin: 0 0 20px;
+      }
+      .hero p {
+        font-size: 17px;
+        color: var(--muted);
+        margin: 0 0 20px;
+      }
+      .perks {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 0 0 28px;
+        padding: 0;
+      }
+      .perks li {
+        font-size: 13px;
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: #fff;
+        border: 1px solid #c9e2de;
+      }
+      .perks li::before {
+        content: "✓ ";
+        color: var(--ink);
+      }
+      .stores {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+      .stores img {
+        display: block;
+        height: 52px;
+        width: auto;
+      }
+      .notice {
+        margin: 20px 0 0;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      /* 기울인 휴대폰 */
+      .phone {
+        width: 250px;
+        border: 8px solid #f4f6f8;
+        border-radius: 40px;
+        overflow: hidden;
+        background: #f4f6f8;
+        box-shadow:
+          0 0 0 1px #d9dee3,
+          0 30px 60px rgb(30 58 95 / 0.18);
+      }
+      .phone img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 32px;
+      }
+      .devices {
+        flex: 1;
+        position: relative;
+        height: 600px;
+      }
+      .devices .phone {
+        position: absolute;
+      }
+      .devices .back {
+        right: 30px;
+        top: 70px;
+        width: 220px;
+        transform: rotate(9deg);
+      }
+      .devices .front {
+        left: 40px;
+        top: 0;
+        transform: rotate(-5deg);
+      }
+
+      /* 기능: 시·군 경계선 배경 */
+      .feature {
+        position: relative;
+        padding: 72px 0;
+      }
+      .feature::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: url(img/korea.svg) center / auto 115% no-repeat;
+        opacity: 0.14;
+        pointer-events: none;
+      }
+      .feature .wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 64px;
+      }
+      .feature .text {
+        flex: 1;
+        max-width: 460px;
+        margin-left: 6%;
+      }
+      .eyebrow {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--ink);
+        margin-bottom: 6px;
+      }
+      .feature h2 {
+        font-size: 36px;
+        line-height: 1.28;
+        letter-spacing: -0.02em;
+        margin: 0 0 16px;
+      }
+      .feature p {
+        color: var(--muted);
+        margin: 0 0 12px;
+      }
+      .feature .phone {
+        width: 230px;
+        transform: rotate(4deg);
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        max-width: 260px;
+      }
+      .chips span {
+        font-size: 12px;
+        font-weight: 600;
+        color: #fff;
+        background: var(--ink);
+        padding: 3px 10px;
+        border-radius: 999px;
+      }
+
+      /* 그 밖에도 */
+      .more {
+        padding: 72px 24px 40px;
+      }
+      .more h2 {
+        text-align: center;
+        font-size: 32px;
+        margin: 0 0 40px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px 40px;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      .grid h3 {
+        font-size: 16px;
+        margin: 0 0 4px;
+      }
+      .grid p {
+        margin: 0;
+        font-size: 15px;
+        color: var(--muted);
+      }
+
+      /* 알아 두기 */
+      .facts {
+        max-width: 900px;
+        margin: 56px auto 0;
+        padding: 28px 32px;
+        border-radius: 20px;
+        background: var(--mist);
+      }
+      .facts h2 {
+        font-size: 20px;
+        text-align: left;
+        margin: 0 0 12px;
+      }
+      .facts ul {
+        margin: 0;
+        padding-left: 20px;
+        color: var(--muted);
+        font-size: 15px;
+      }
+      .facts li + li {
+        margin-top: 4px;
+      }
+
+      /* 마지막 받기 카드 */
+      .cta {
+        margin: 56px auto 0;
+        max-width: 1000px;
+        border-radius: 28px;
+        padding: 56px;
+        color: #fff;
+        background: linear-gradient(160deg, #1e3a5f 0%, #234f70 55%, #2a8f84 100%);
+        display: flex;
+        align-items: center;
+        gap: 48px;
+      }
+      .cta .text {
+        flex: 1;
+      }
+      .cta h2 {
+        font-size: 34px;
+        line-height: 1.25;
+        margin: 0 0 24px;
+      }
+      .cta .perks li {
+        background: rgb(255 255 255 / 0.12);
+        border-color: rgb(255 255 255 / 0.35);
+      }
+      .cta .perks li::before {
+        color: #fff;
+      }
+      .video {
+        flex: none;
+        width: 240px;
+        aspect-ratio: 9 / 16;
+        border-radius: 20px;
+        overflow: hidden;
+        background: #000;
+        position: relative;
+        border: 0;
+        padding: 0;
+        cursor: pointer;
+      }
+      .video img,
+      .video iframe {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        object-fit: cover;
+      }
+      .video .play {
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: rgb(0 0 0 / 0.55);
+        color: #fff;
+        font-size: 26px;
+        line-height: 64px;
+        text-align: center;
+      }
+
+      footer {
+        padding: 56px 0 48px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      footer .wrap {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+      footer p {
+        margin: 0 0 6px;
+        max-width: 720px;
+      }
+      footer nav {
+        display: flex;
+        gap: 20px;
+      }
+
+      /* 휴대폰 폭 */
+      @media (max-width: 760px) {
+        header nav {
+          display: none;
+        }
+        header .wrap {
+          height: 72px;
+        }
+        .hero {
+          flex-direction: column;
+          text-align: center;
+          padding: 16px 24px 40px;
+          gap: 24px;
+        }
+        .hero h1 {
+          font-size: 32px;
+        }
+        .hero p {
+          font-size: 16px;
+        }
+        .perks,
+        .stores {
+          justify-content: center;
+        }
+        .stores {
+          gap: 10px;
+        }
+        .stores img {
+          height: 46px;
+        }
+        .devices {
+          width: 100%;
+          height: 420px;
+          flex: none;
+        }
+        .devices .front {
+          width: 190px;
+          left: calc(50% - 150px);
+        }
+        .devices .back {
+          width: 170px;
+          right: calc(50% - 160px);
+          top: 50px;
+        }
+        .feature {
+          padding: 48px 0;
+        }
+        .feature::before {
+          background-size: auto 90%;
+        }
+        .feature .wrap {
+          flex-direction: column;
+          gap: 28px;
+          text-align: center;
+        }
+        .feature .text {
+          margin: 0;
+        }
+        .feature h2 {
+          font-size: 27px;
+        }
+        .feature .phone {
+          width: 190px;
+        }
+        .chips {
+          justify-content: center;
+          max-width: none;
+        }
+        .more h2 {
+          font-size: 26px;
+        }
+        .grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 24px 20px;
+        }
+        .facts {
+          margin: 40px 16px 0;
+          padding: 24px 20px;
+        }
+        .cta {
+          margin: 32px 16px 0;
+          padding: 40px 16px;
+          flex-direction: column;
+          text-align: center;
+          gap: 32px;
+        }
+        .cta h2 {
+          font-size: 26px;
+        }
+        .video {
+          width: 200px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top">
+      <header>
+        <div class="wrap">
+          <a class="brand" href="#">
+            <img src="img/icon.webp" alt="" width="40" height="40" />
+            <span><b>어린이집 정보공개</b><small>법 위반 시설·보육교직원 공표</small></span>
+          </a>
+          <nav>
+            <a href="#features">기능</a>
+            <a href="#video">영상</a>
+            <a href="mailto:ovsoce@gmail.com">문의</a>
+          </nav>
+        </div>
+      </header>
+
+      <section class="hero wrap">
+        <div class="hero-text">
+          <h1>우리 동네 어린이집,<br />공표된 정보를 원문 그대로</h1>
+          <p>
+            정부가 공표한 어린이집 <b class="hl">법 위반 시설·보육교직원 정보</b>를
+            <b class="hl">지역별로</b> 찾아보고, 위반행위와 처분 내용을
+            <b class="hl">요약 없이 원문으로</b> 확인해요.
+          </p>
+          <ul class="perks">
+            <li>로그인 없음</li>
+            <li>출처·원문 링크</li>
+            <li>지역별로 찾기</li>
+          </ul>
+          <div class="stores">
+            <a href="https://apps.apple.com/kr/app/id6811353132"
+              ><img
+                src="img/appstore-ko.svg"
+                alt="App Store에서 다운로드하기"
+                width="169"
+                height="52"
+            /></a>
+            <a href="https://play.google.com/store/apps/details?id=io.github.ovso.righttoknow"
+              ><img
+                src="img/googleplay-ko.webp"
+                alt="Google Play에서 다운로드하기"
+                width="175"
+                height="52"
+            /></a>
+          </div>
+          <p class="notice">
+            교육부·어린이집정보공개포털이 공표한 자료를 출처 표시하여 그대로 보여주는 비공식
+            앱이며 정부 기관과 무관합니다.
+          </p>
+        </div>
+        <div class="devices">
+          <div class="phone back">
+            <img src="img/03.webp" alt="위반행위자 목록 화면" width="540" height="1174" />
+          </div>
+          <div class="phone front">
+            <img src="img/01.webp" alt="위반시설 목록 화면" width="540" height="1174" />
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <main id="features">
+      <section class="feature">
+        <div class="wrap">
+          <div class="text">
+            <div class="eyebrow">지역·유형으로 좁혀 보기</div>
+            <h2>시·도부터 시·군·구까지,<br />우리 동네만 골라 봐요.</h2>
+            <p>설립 유형으로 거르고, 어린이집명이나 지역 이름으로 검색할 수도 있어요.</p>
+          </div>
+          <div class="phone">
+            <img
+              src="img/05.webp"
+              alt="지역을 고르는 화면"
+              width="540"
+              height="1174"
+              loading="lazy"
+            />
+          </div>
+          <div class="chips">
+            <span>국공립</span><span>사회복지법인</span><span>직장</span><span>가정</span
+            ><span>협동</span><span>민간</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="feature">
+        <div class="wrap">
+          <div class="text">
+            <div class="eyebrow">원문 그대로</div>
+            <h2>위반행위와 처분 내용,<br />요약 없이 원문으로.</h2>
+            <p>
+              처분 배지는 원문에서 자동으로 분류한 참고값이고, 원문이 정본이에요. 모든 상세
+              화면에서 출처와 원문 링크를 함께 보여 줘요.
+            </p>
+          </div>
+          <div class="phone">
+            <img
+              src="img/02.webp"
+              alt="위반시설 상세 화면"
+              width="540"
+              height="1174"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section class="feature">
+        <div class="wrap">
+          <div class="text">
+            <div class="eyebrow">위반행위자</div>
+            <h2>공표된 보육교직원 정보도<br />함께 확인해요.</h2>
+            <p>
+              아동복지법·영유아보육법 위반으로 공표된 보육교직원의 위반당시 어린이집, 위반행위,
+              행정처분 내용을 원문으로 봐요.
+            </p>
+          </div>
+          <div class="phone">
+            <img
+              src="img/06.webp"
+              alt="위반행위자 상세 화면"
+              width="540"
+              height="1174"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section class="more wrap">
+        <h2>그 밖에도…</h2>
+        <div class="grid">
+          <div>
+            <h3>공표 기록</h3>
+            <p>교육부 명단공표 문서 목록과 첨부 파일(PDF·한글)을 받아요.</p>
+          </div>
+          <div>
+            <h3>원문으로 바로</h3>
+            <p>상세 화면마다 원문 링크로 바로 넘어가요.</p>
+          </div>
+          <div>
+            <h3>주소는 지도 앱으로</h3>
+            <p>어린이집 주소를 지도 앱으로 열어요.</p>
+          </div>
+          <div>
+            <h3>어린이집 뉴스</h3>
+            <p>어린이집 관련 최신 기사를 찾아봐요.</p>
+          </div>
+          <div>
+            <h3>예방·대응 영상</h3>
+            <p>아동학대 예방·대응·제도를 다룬 공개 영상을 모았어요.</p>
+          </div>
+          <div>
+            <h3>다크 모드</h3>
+            <p>밤에도 눈부시지 않게 봐요.</p>
+          </div>
+        </div>
+
+        <div class="facts">
+          <h2>알아 두세요</h2>
+          <ul>
+            <li>위반당시 명칭·대표자·원장은 현재와 다를 수 있어요.</li>
+            <li>
+              공표기간은 처분권자가 정하며 앱이 계산하지 않아요. 공표기간이 지난 건은
+              영유아보육법 제49조의3에 따라 표시하지 않아요.
+            </li>
+            <li>최신 여부는 원문에서 확인해 주세요.</li>
+            <li>공표 원문의 정정·삭제는 공표 기관(교육부·한국사회보장정보원)에 요청해 주세요.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="cta" id="video">
+        <div class="text">
+          <h2>이사나 입소를 앞두고<br />우리 동네부터 찾아보세요.</h2>
+          <ul class="perks">
+            <li>로그인 없음</li>
+            <li>출처·원문 링크</li>
+            <li>지역별로 찾기</li>
+          </ul>
+          <div class="stores">
+            <a href="https://apps.apple.com/kr/app/id6811353132"
+              ><img
+                src="img/appstore-ko.svg"
+                alt="App Store에서 다운로드하기"
+                width="169"
+                height="52"
+            /></a>
+            <a href="https://play.google.com/store/apps/details?id=io.github.ovso.righttoknow"
+              ><img
+                src="img/googleplay-ko.webp"
+                alt="Google Play에서 다운로드하기"
+                width="175"
+                height="52"
+            /></a>
+          </div>
+        </div>
+        <button
+          class="video"
+          type="button"
+          aria-label="24초 소개 영상 재생"
+          onclick="
+            this.innerHTML =
+              '<iframe src=&quot;https://www.youtube-nocookie.com/embed/U0idnbqsTkQ?autoplay=1&amp;playsinline=1&quot; title=&quot;어린이집 정보공개 소개 영상&quot; allow=&quot;autoplay; encrypted-media; picture-in-picture&quot; allowfullscreen></iframe>'
+          "
+        >
+          <img src="img/poster.webp" alt="" width="300" height="533" loading="lazy" />
+          <span class="play">▶</span>
+        </button>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <div>
+          <p>
+            <b>어린이집 정보공개</b> · 원문 출처: 어린이집정보공개포털(교육부·한국사회보장정보원),
+            교육부 어린이집 명단공표 게시판
+          </p>
+          <p>
+            교육부·어린이집정보공개포털이 공표한 자료를 출처 표시하여 그대로 보여주는 비공식
+            앱이며 정부 기관과 무관합니다.
+          </p>
+        </div>
+        <nav>
+          <a href="https://sites.google.com/view/newrighttoknow/">개인정보처리방침</a>
+          <a href="mailto:ovsoce@gmail.com">문의</a>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

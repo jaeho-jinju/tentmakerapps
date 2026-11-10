@@ -1,0 +1,213 @@
+# 어린이집 정보공개 사실 목록
+#
+# 매일 쓰는 글은 이 파일에 있는 사실만 쓴다. 글에 쓴 사실은 id로 밝히고, 검사 스크립트가 이 파일과 대조한다.
+# 기능이나 스토어 상태가 바뀌면 이 파일부터 고친다.
+#
+# 이 앱은 정부가 공표한 법 위반 정보를 다시 보여 주는 앱이다. 앱은 공표를 보여 줄 뿐 평가하지 않는다(ADR-0013).
+# 글도 같은 원칙을 따른다. 특정 어린이집·사람·사건은 쓰지 않는다.
+#
+# source 적는 법
+#   right-to-know:<경로>   jaeho-jinju/right-to-know 저장소의 파일
+#   listing.md             스토어 문안(_assets/right-to-know/store/listing.md, 저장소 밖)
+#   tentmakerapps:<경로>   이 저장소의 파일
+
+checked: "2026-11-10"
+
+app:
+  name: 어린이집 정보공개
+  tagline: 법 위반 시설·보육교직원 공표
+  developer: TheTentmaker
+  page: https://tentmakerapps.com/right-to-know/
+  app_store: https://apps.apple.com/kr/app/id6811353132
+  google_play: https://play.google.com/store/apps/details?id=io.github.ovso.righttoknow
+  privacy: https://sites.google.com/view/newrighttoknow/
+
+facts:
+  - id: unofficial
+    fact: 교육부·어린이집정보공개포털이 공표한 자료를 출처 표시하여 그대로 보여주는 비공식 앱이며 정부 기관과 무관하다.
+    source:
+      - listing.md 긴 설명 첫 문단
+      - right-to-know:docs/adr/0013-concept-tone-name-editorial-ads.md 톤
+
+  - id: sources
+    fact: 자료는 어린이집정보공개포털(교육부·한국사회보장정보원)과 교육부 어린이집 명단공표 게시판, 두 곳에서 온다.
+    source:
+      - listing.md 원문 출처
+      - right-to-know:CONTEXT.md 교육부 게시판
+
+  - id: stores
+    fact: iPhone과 안드로이드 앱이고, App Store와 Google Play에서 받을 수 있다.
+    source:
+      - App Store 조회 API(2026-11-10, 버전 26.40.0)
+      - Google Play 앱 페이지(2026-11-10, 응답 200)
+
+  - id: free-ads
+    fact: 무료 앱이고 광고가 있다. 광고에는 '광고' 표시가 붙는다. 뉴스·영상 화면에는 광고가 없다.
+    source:
+      - listing.md 광고와 개인정보
+      - right-to-know:docs/adr/0013-concept-tone-name-editorial-ads.md 광고 지면 표
+
+  - id: korea-only
+    fact: 한국어 앱이고 대한민국에서만 배포한다.
+    source:
+      - right-to-know:docs/adr/0010-release-continuity.md §7
+
+  - id: facility-tab
+    fact: 위반시설 탭은 영유아보육법 위반으로 행정처분을 받아 공표된 어린이집을 보여 준다. 위반당시 명칭, 지역, 설립 유형, 위반행위와 처분 내용 원문을 본다.
+    source:
+      - listing.md 무엇을 볼 수 있나요
+      - right-to-know:CONTEXT.md 위반시설
+
+  - id: actor-tab
+    fact: 위반행위자 탭은 아동복지법·영유아보육법 위반으로 공표된 보육교직원을 보여 준다. 위반당시 어린이집, 위반행위의 내용, 행정처분의 내용 원문을 본다.
+    source:
+      - listing.md 무엇을 볼 수 있나요
+      - right-to-know:CONTEXT.md 위반행위자
+
+  - id: records
+    fact: 공표 기록 화면은 교육부가 게시한 어린이집 명단공표 문서 목록을 보여 주고, 첨부 파일(PDF·한글)을 내려받을 수 있다.
+    source:
+      - listing.md 무엇을 볼 수 있나요
+      - right-to-know:CONTEXT.md 공표 기록
+
+  - id: news
+    fact: 뉴스 탭에서 어린이집 관련 최신 기사를 찾아본다.
+    source:
+      - listing.md 무엇을 볼 수 있나요
+
+  - id: videos
+    fact: 영상 탭에는 아동학대 예방·대응·제도를 다룬 공개 영상을 모아 두었다.
+    source:
+      - listing.md 무엇을 볼 수 있나요
+      - right-to-know:docs/adr/0006-topic-news-curated-videos.md
+
+  - id: region-filter
+    fact: 지역은 시·도를 고른 뒤 시·군·구를 골라 좁힌다. 고른 지역은 위반시설·위반행위자 두 탭에 함께 쓰인다.
+    source:
+      - listing.md 이렇게 찾습니다
+      - right-to-know:docs/adr/0018-search-filter-sort-external-map.md 초기화(지역은 공유 컨텍스트)
+
+  - id: type-filter
+    fact: 설립 유형(국공립·사회복지법인·직장·가정·협동·민간)으로 거를 수 있다.
+    source:
+      - listing.md 이렇게 찾습니다
+
+  - id: search
+    fact: 어린이집명이나 지역 이름으로 검색한다. 사람 이름으로 찾는 검색은 없다.
+    source:
+      - listing.md 이렇게 찾습니다
+      - right-to-know:docs/adr/0018-search-filter-sort-external-map.md 범위 밖(인명 검색)
+
+  - id: sort
+    fact: 위반시설은 지역순·명칭순, 위반행위자는 지역순·이력 많은 순으로 정렬한다. 포털에 처분일이 없어서 최근순 정렬은 없다.
+    source:
+      - right-to-know:docs/adr/0018-search-filter-sort-external-map.md 정렬
+
+  - id: raw-text
+    fact: 위반행위·행정처분 내용은 요약이나 평가 없이 원문 그대로 보여 준다.
+    source:
+      - listing.md 원문 그대로 보여줍니다
+      - right-to-know:docs/adr/0013-concept-tone-name-editorial-ads.md 편집 원칙 1
+
+  - id: badge-reference
+    fact: 처분 배지는 원문에서 자동으로 분류한 참고값이고, 원문이 정본이다.
+    source:
+      - listing.md 원문 그대로 보여줍니다
+      - right-to-know:docs/adr/0005-raw-text-plus-derived-tags.md
+
+  - id: snapshot
+    fact: 상세 화면의 명칭·대표자·원장은 위반당시 값이라 지금과 다를 수 있다. 상세 화면 위에 이 안내가 늘 있다.
+    source:
+      - listing.md 원문 그대로 보여줍니다
+      - right-to-know:docs/adr/0013-concept-tone-name-editorial-ads.md 편집 원칙 2
+
+  - id: counts-as-is
+    fact: 목록의 '행정처분 N건'과 '법 위반 이력 N회'는 포털이 준 값을 그대로 보여 주고, 앱이 합하거나 다시 세지 않는다.
+    source:
+      - right-to-know:CONTEXT.md 법 위반 이력 N회 / 행정처분 N건
+
+  - id: period
+    fact: 공표기간은 처분권자가 정하며 앱이 계산하지 않는다. 공표기간이 지난 건은 영유아보육법 제49조의3에 따라 표시하지 않는다.
+    source:
+      - listing.md 원문 그대로 보여줍니다
+      - right-to-know:docs/adr/0004-publication-period-not-computed-display-cap.md
+
+  - id: current-only
+    fact: 앱은 포털에 지금 공표 중인 건만 보여 준다. 포털에서 내려간 건은 다음 갱신 때 앱에서도 빠진다. 최신 여부는 원문에서 확인하라고 안내한다.
+    source:
+      - right-to-know:CONTEXT.md 공표 중
+      - listing.md 원문 그대로 보여줍니다
+
+  - id: source-links
+    fact: 모든 상세 화면에 출처 기관명과 원문 링크가 있어 원문으로 바로 넘어갈 수 있다.
+    source:
+      - listing.md 이렇게 찾습니다
+      - right-to-know:docs/adr/0013-concept-tone-name-editorial-ads.md 편집 원칙 3
+
+  - id: map-app
+    fact: 어린이집 주소는 휴대폰에 있는 지도 앱으로 연다.
+    source:
+      - listing.md 이렇게 찾습니다
+      - right-to-know:docs/adr/0018-search-filter-sort-external-map.md
+
+  - id: no-login
+    fact: 회원가입이나 로그인이 없고 개인정보를 입력받지 않는다. 광고 표시를 위해 광고 ID를 쓴다.
+    source:
+      - listing.md 광고와 개인정보
+      - right-to-know:docs/adr/0023-privacy-policy-and-data-safety.md
+
+  - id: correction
+    fact: 공표 원문의 정정·삭제는 공표 기관(교육부·한국사회보장정보원)에 요청한다. 앱 표시 오류는 앱 문의 메일로 받는다.
+    source:
+      - listing.md 정정·삭제 요청
+      - right-to-know:docs/adr/0011-correction-takedown-policy.md
+
+  - id: dark-mode
+    fact: 다크 모드를 지원한다.
+    source:
+      - listing.md 출시 노트
+
+# 글에서 쓰지 않는 것. 앱·스토어 문안 원칙을 글에도 그대로 쓴다. words에 있는 말이 글에 있으면 검사에서 떨어진다.
+avoid:
+  - id: no-labels
+    rule: 낙인 찍는 말을 쓰지 않는다. 대상은 '위반시설'·'위반행위자'·'보육교직원'처럼 원문 용어로 쓴다. 앱이 공개하는 것처럼 들리는 '명단 공개'도 쓰지 않는다.
+    words: [블랙리스트, 문제 어린이집, 가해자, 범죄자, 학대 교사, 학대교사, 명단 공개, 신상]
+    source:
+      - right-to-know:CONTEXT.md _Avoid_
+      - right-to-know:docs/adr/0013-concept-tone-name-editorial-ads.md 톤
+
+  - id: no-evaluation
+    rule: 앱은 평가자가 아니다. 어린이집을 좋다·나쁘다·안전하다고 말하지 않는다.
+    words: [안전한 어린이집, 위험한 어린이집, 나쁜 어린이집, 좋은 어린이집, 믿을 수 있는, 피해야 할]
+    source:
+      - right-to-know:docs/adr/0013-concept-tone-name-editorial-ads.md 컨셉(공표의 뷰어이지 평가자가 아니다)
+
+  - id: not-official
+    rule: 정부가 만든 앱처럼 쓰지 않는다. '정부'·'교육부'·'포털'은 출처를 말할 때만 쓴다.
+    words: [정부 앱, 정부가 만든, 교육부 앱, 교육부가 만든, 정부 공식, 교육부 공식, 공식 제공]
+    source:
+      - right-to-know:docs/adr/0013-concept-tone-name-editorial-ads.md 이름
+
+  - id: old-names
+    rule: 이관 전 기관명과 다른 서비스 이름을 쓰지 않는다.
+    words: [보건복지부, 복지부, 아이사랑]
+    source:
+      - right-to-know:CONTEXT.md _Avoid_
+
+  - id: period-words
+    rule: 공표기간을 다른 말로 바꾸지 않는다. 앱은 만료일을 계산하지 않는다.
+    words: [유효기간, 게시기간, 보존기간, 만료]
+    source:
+      - right-to-know:CONTEXT.md 공표기간 _Avoid_
+
+  - id: no-trademarks
+    rule: 남의 상표와 앱 이름을 쓰지 않는다.
+    words: [네이버, 카카오, 카톡, 유튜브, 구글 지도, 구글맵, 티맵, 애플 지도, 인스타그램, 페이스북]
+    source:
+      - tentmakerapps:apps/mapquilt/facts.yaml no-trademarks와 같은 원칙
+
+  - id: no-hype
+    rule: 앱을 치켜세우는 말과 순위·가격 문구를 쓰지 않는다.
+    words: [최고, 1위, 최초, 유일, 완벽, 가장 쉬운, 가장 좋은, 강력 추천, 필수 앱]
+    source:
+      - tentmakerapps:apps/mapquilt/facts.yaml no-hype와 같은 원칙
