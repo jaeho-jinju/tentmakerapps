@@ -1,4 +1,5 @@
-# 매일 글 한 편: 앱을 돌아가며 고르고, Claude가 쓰고, 검사를 통과하면 커밋한다. 커밋하면 Cloudflare Pages가 배포한다.
+# 매일 글: 앱마다 한 주에 WEEKLY편(scripts/post-lib.mjs)이 되게 그날 쓸 앱을 고르고, Claude가 쓰고, 검사를 통과하면 커밋한다.
+# 커밋하면 Cloudflare Pages가 배포한다.
 # 공개 저장소라 남이 부를 수 있는 트리거(issue_comment·pull_request_target 등)는 두지 않는다.
 # workflow_dispatch(손으로 실행)는 이 저장소에 쓰기 권한이 있는 사람만 누를 수 있다.
 name: 매일 글
@@ -32,24 +33,46 @@ jobs:
       - run: npm test
       - run: npm install -g @anthropic-ai/claude-code@2.1.319
 
-      - name: 글 받기
+      # 그날 고른 앱(0개일 수도, 여러 개일 수도 있다)을 차례로 쓴다.
+      # 한 앱이 실패해도 나머지 앱 글은 올리고, 마지막 단계에서 실행을 실패로 끝낸다(GitHub가 메일로 알린다).
+      - name: 글 받고 검사해서 만들기
         env:
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: |
-          app=$(node scripts/post.mjs pick)
-          echo "APP=$app" >> "$GITHUB_ENV"
-          node scripts/post.mjs prompt "$app" \
-            | claude -p --tools "" --system-prompt "너는 짧은 한국어 블로그 글을 쓴다. 지시한 형식만 답한다." \
-            > "$RUNNER_TEMP/reply.md" \
-            || { cat "$RUNNER_TEMP/reply.md"; exit 1; } # claude는 "Not logged in" 같은 오류도 stdout에 쓴다
-
-      - name: 검사하고 글 만들기
-        run: node scripts/post.mjs publish "$APP" "$RUNNER_TEMP/reply.md" | tee "$RUNNER_TEMP/published.txt"
+          apps=$(node scripts/post.mjs pick)
+          echo "오늘 쓸 앱: $(echo ${apps:-없음})"
+          : > "$RUNNER_TEMP/published.txt"
+          failed=""
+          for app in $apps; do
+            echo "::group::$app"
+            if ! node scripts/post.mjs prompt "$app" \
+              | claude -p --tools "" --system-prompt "너는 짧은 한국어 블로그 글을 쓴다. 지시한 형식만 답한다." \
+              > "$RUNNER_TEMP/$app.md"; then
+              cat "$RUNNER_TEMP/$app.md" # claude는 "Not logged in" 같은 오류도 stdout에 쓴다
+              failed="$failed $app"
+            elif ! node scripts/post.mjs publish "$app" "$RUNNER_TEMP/$app.md" | tee -a "$RUNNER_TEMP/published.txt"; then
+              failed="$failed $app"
+            fi
+            echo "::endgroup::"
+          done
+          echo "FAILED=${failed# }" >> "$GITHUB_ENV"
 
       - name: 커밋
         run: |
+          n=$(($(wc -l < "$RUNNER_TEMP/published.txt")))
+          if [ "$n" -eq 0 ]; then echo "올린 글이 없다"; exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add apps site
-          git commit -m "글: $(cat "$RUNNER_TEMP/published.txt")"
+          if [ "$n" -eq 1 ]; then
+            git commit -m "글: $(cat "$RUNNER_TEMP/published.txt")"
+          else
+            git commit -m "글 ${n}편" -m "$(cat "$RUNNER_TEMP/published.txt")"
+          fi
           git push
+
+      - name: 실패한 앱 알리기
+        if: env.FAILED != ''
+        run: |
+          echo "Claude 호출이 실패했거나 검사를 통과하지 못해 올리지 못한 앱: $FAILED"
+          exit 1

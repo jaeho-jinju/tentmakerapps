@@ -7,7 +7,7 @@ import YAML from "yaml";
 import {
   addToSitemap,
   checkPost,
-  pickApp,
+  pickApps,
   rebuildApp,
   renderPage,
   splitPost,
@@ -129,15 +129,32 @@ test("머리말이 없으면 던진다", () => {
   assert.throws(() => splitPost("그냥 글"), /머리말/);
 });
 
-test("앱은 날마다 돌아가며 고른다", () => {
+test("앱마다 어느 7일을 잡아도 weekly편씩 고른다", () => {
   const r = fs.mkdtempSync(path.join(os.tmpdir(), "pick-test-"));
-  for (const a of ["b-app", "a-app"]) {
+  const apps = ["d-app", "b-app", "a-app", "c-app"];
+  for (const a of apps) {
     fs.mkdirSync(path.join(r, "apps", a), { recursive: true });
     fs.writeFileSync(path.join(r, "apps", a, "facts.yaml"), "facts: []\n");
   }
   fs.mkdirSync(path.join(r, "apps", "no-facts"));
-  const picks = new Set(["2026-11-10", "2026-11-11"].map((d) => pickApp(r, d)));
-  assert.deepEqual([...picks].sort(), ["a-app", "b-app"]);
+  const days = (start, n) =>
+    Array.from({ length: n }, (_, i) => new Date(Date.parse(`${start}T00:00:00Z`) + i * 86400000).toISOString().slice(0, 10));
+  const perDay = (weekly, start) => days(start, 7).map((d) => pickApps(r, d, weekly));
+
+  for (const weekly of [1, 2, 3, 7]) {
+    for (const start of ["2026-11-13", "2026-11-16"]) {
+      const picks = perDay(weekly, start).flat();
+      for (const a of apps) assert.equal(picks.filter((p) => p === a).length, weekly, `${weekly}편 ${start} ${a}`);
+      assert.ok(!picks.includes("no-facts"));
+    }
+  }
+  // 앱 4개·주 2편: 날마다 1~2편이고 하루에 같은 앱은 두 번 나오지 않는다
+  for (const day of perDay(2, "2026-11-13")) {
+    assert.ok(day.length >= 1 && day.length <= 2);
+    assert.equal(new Set(day).size, day.length);
+  }
+  // 앱 4개·주 1편: 쓰지 않는 날이 있다
+  assert.ok(perDay(1, "2026-11-13").some((day) => day.length === 0));
 });
 
 test("페이지는 글자를 이스케이프하고 sitemap에 한 번만 더한다", () => {

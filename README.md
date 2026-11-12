@@ -15,12 +15,16 @@
 
 ## 매일 글
 
-`.github/workflows/daily-post.yml`이 매일 09:17(한국)에 글 한 편을 올린다. 앱은 날마다 돌아가며 하나만 고른다.
+`.github/workflows/daily-post.yml`이 매일 09:17(한국)에 돈다. 앱마다 한 주에 `WEEKLY`편(`scripts/post-lib.mjs`, 지금 2)을 올린다.
 
-1. `scripts/post.mjs pick`: 오늘 앱을 고른다. `apps/<앱>/facts.yaml`이 있는 앱만 돈다.
-2. `scripts/post.mjs prompt`: `prompts/daily-post.md`에 사실 목록과 이미 쓴 글 제목을 넣어 Claude에게 준다. Claude는 도구 없이 글만 답한다.
-3. `scripts/post.mjs publish`: 답을 검사한다. 통과하지 못하면 그날은 올리지 않고 실행이 실패한다(GitHub가 메일로 알린다).
-4. 통과하면 `apps/<앱>/posts/<slug>.md`(원문)를 쓰고 그 앱을 rebuild한 뒤 `apps`·`site`를 커밋한다.
+- 한 주 몫(앱 수 × `WEEKLY`편)을 7일에 고르게 나누고, 앱은 이름순으로 돌아가며 채운다. 그래서 날에 따라 0편·1편·여러 편이다. 앱이 늘면 하루 편수가 저절로 늘고, 앱마다 한 주 편수는 그대로다.
+- `WEEKLY`를 바꾸려면 그 숫자만 고쳐 `main`에 푸시한다. 다음 날 실행부터 적용된다. 날짜별로 어느 앱을 쓰는지는 `POST_DATE=2026-11-20 node scripts/post.mjs pick`으로 본다.
+
+1. `scripts/post.mjs pick`: 오늘 쓸 앱을 고른다(한 줄에 하나). `apps/<앱>/facts.yaml`이 있는 앱만 돈다.
+2. 고른 앱마다 차례로 아래를 한다.
+   - `scripts/post.mjs prompt`: `prompts/daily-post.md`에 사실 목록과 이미 쓴 글 제목을 넣어 Claude에게 준다. Claude는 도구 없이 글만 답한다.
+   - `scripts/post.mjs publish`: 답을 검사한다. 통과하면 `apps/<앱>/posts/<slug>.md`(원문)를 쓰고 그 앱을 rebuild한다. 통과하지 못하면 그 앱은 그날 올리지 않는다.
+3. 올린 글이 있으면 `apps`·`site`를 한 번에 커밋한다. 올리지 못한 앱이 있으면 다른 앱 글은 커밋한 뒤 실행을 실패로 끝낸다(GitHub가 메일로 알린다). 빠진 글은 다시 쓰지 않고 다음 차례를 기다린다.
 
 rebuild(`node scripts/post.mjs rebuild [앱]`, 앱을 빼면 모든 앱)는 `apps/<앱>/posts/*.md`에서 아래를 다시 만든다. 여러 번 돌려도 결과가 같다. 글 페이지의 틀을 바꿨을 때도 이것으로 이미 있는 글을 모두 다시 만든다.
 

@@ -1,5 +1,5 @@
 // 매일 글 명령. .github/workflows/daily-post.yml이 차례대로 부른다.
-//   node scripts/post.mjs pick                    오늘 쓸 앱 이름
+//   node scripts/post.mjs pick                    오늘 쓸 앱 이름, 한 줄에 하나(없는 날도 있다. post-lib.mjs WEEKLY)
 //   node scripts/post.mjs prompt <앱>             Claude에게 줄 지시문
 //   node scripts/post.mjs publish <앱> <답 파일>   검사하고, 통과하면 글을 만들고 rebuild한다(통과 못 하면 아무것도 쓰지 않고 실패)
 //   node scripts/post.mjs rebuild [앱]            글 페이지·블로그·sitemap을 원문에서 다시 만든다(앱을 빼면 모든 앱)
@@ -14,7 +14,7 @@ import {
   listApps,
   loadFacts,
   loadPosts,
-  pickApp,
+  pickApps,
   rebuildApp,
   splitPost,
 } from "./post-lib.mjs";
@@ -24,7 +24,7 @@ const date = process.env.POST_DATE ?? kstDate();
 const [command, app, replyFile] = process.argv.slice(2);
 
 if (command === "pick") {
-  console.log(pickApp(root, date));
+  for (const a of pickApps(root, date)) console.log(a);
 } else if (command === "prompt" && app) {
   process.stdout.write(buildPrompt(root, app, loadFacts(root, app), loadPosts(root, app)));
 } else if (command === "publish" && app && replyFile) {

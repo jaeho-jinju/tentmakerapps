@@ -7,6 +7,9 @@ import YAML from "yaml";
 export const SITE = "https://tentmakerapps.com";
 export const LIMITS = { body: 300, title: 40, description: 80, paragraphs: 3, facts: 2 };
 
+/** 앱마다 한 주에 올리는 글 수. 이 숫자만 고치면 앱이 몇 개든 하루에 올릴 글 수가 맞춰진다. */
+export const WEEKLY = 2;
+
 /** 한국 날짜(YYYY-MM-DD). */
 export function kstDate(now = new Date()) {
   return new Date(now.getTime() + 9 * 3600 * 1000).toISOString().slice(0, 10);
@@ -20,12 +23,19 @@ export function listApps(root) {
     .sort();
 }
 
-/** facts.yaml이 있는 앱을 이름순으로 두고, 날마다 하나씩 돌아가며 고른다. */
-export function pickApp(root, date) {
+/**
+ * 오늘 글을 쓸 앱들. 한 주 몫(앱 수 × weekly편)을 7일에 고르게 나누고, facts.yaml이 있는 앱을 이름순으로
+ * 돌아가며 채운다. 날마다 같은 차례가 7일 주기로 되풀이되므로 어느 7일을 잡아도 앱마다 weekly편이다.
+ * 날에 따라 0편일 수도, 여러 편일 수도 있다.
+ */
+export function pickApps(root, date, weekly = WEEKLY) {
   const apps = listApps(root);
   if (apps.length === 0) throw new Error("apps/<앱>/facts.yaml이 없다");
-  const day = Math.floor(Date.parse(`${date}T00:00:00Z`) / 86400000);
-  return apps[day % apps.length];
+  const total = apps.length * weekly;
+  const d = Math.floor(Date.parse(`${date}T00:00:00Z`) / 86400000) % 7;
+  const from = Math.floor((d * total) / 7);
+  const to = Math.floor(((d + 1) * total) / 7);
+  return Array.from({ length: to - from }, (_, i) => apps[(from + i) % apps.length]);
 }
 
 export function loadFacts(root, app) {
