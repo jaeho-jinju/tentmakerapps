@@ -3,7 +3,15 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
-import { addToSitemap, checkPost, pickApp, renderPage, splitPost } from "./post-lib.mjs";
+import YAML from "yaml";
+import {
+  addToSitemap,
+  checkPost,
+  pickApp,
+  rebuildApp,
+  renderPage,
+  splitPost,
+} from "./post-lib.mjs";
 
 const facts = {
   app: { name: "조각지도", tagline: "사진으로 채우는 전국 지도", app_store: "https://apps.apple.com/kr/app/id1", google_play: null },
@@ -58,6 +66,65 @@ test("이미 쓴 제목과 주소는 떨어진다", () => {
   assert.ok(errors.some((e) => e.includes("이미 쓴 제목")));
 });
 
+test("블로그 주소(posts)는 slug로 쓰지 않는다", () => {
+  assert.ok(check(reply({ slug: "posts" })).some((e) => e.includes("이미 있는 주소")));
+});
+
+test("rebuild는 글 페이지·블로그 쪽·sitemap을 만들고 다시 돌려도 같다", () => {
+  const r = fs.mkdtempSync(path.join(os.tmpdir(), "rebuild-test-"));
+  const postsDir = path.join(r, "apps", "mapquilt", "posts");
+  fs.mkdirSync(postsDir, { recursive: true });
+  fs.writeFileSync(path.join(r, "apps", "mapquilt", "facts.yaml"), YAML.stringify(facts));
+  // 12편: p01(11-01, 가장 오래된 글) … p12(11-12, 가장 새 글)
+  for (let i = 1; i <= 12; i++) {
+    const n = String(i).padStart(2, "0");
+    const md = `---\nslug: "p${n}"\ntitle: "글 ${n} <b>"\ndescription: "설명"\nfacts: [regions-167]\ndate: "2026-11-${n}"\n---\n\n본문 ${n}\n\n둘째 문단\n`;
+    fs.writeFileSync(path.join(postsDir, `p${n}.md`), md);
+  }
+  const site = (...p) => path.join(r, "site", "mapquilt", ...p);
+  fs.mkdirSync(site("posts", "9"), { recursive: true }); // 남아 있던 옛 쪽
+  const sitemap = path.join(r, "site", "sitemap.xml");
+  fs.writeFileSync(sitemap, "<urlset>\n  <url><loc>https://tentmakerapps.com/mapquilt/</loc></url>\n</urlset>\n");
+  const read = (...p) => fs.readFileSync(site(...p), "utf8");
+  const snapshot = () =>
+    [["p01", "index.html"], ["posts", "index.html"], ["posts", "2", "index.html"]].map((p) => read(...p)).concat(fs.readFileSync(sitemap, "utf8"));
+
+  rebuildApp(r, "mapquilt");
+  const first = snapshot();
+
+  // 1쪽: 새 글 10편을 본문까지, 2쪽으로 넘기는 링크
+  const page1 = read("posts", "index.html");
+  assert.equal(page1.match(/<article>/g).length, 10);
+  assert.ok(page1.indexOf('href="/mapquilt/p12/"') < page1.indexOf('href="/mapquilt/p03/"'));
+  assert.ok(!page1.includes('href="/mapquilt/p02/"'));
+  assert.ok(page1.includes("<p>본문 12</p>") && page1.includes("<p>둘째 문단</p>"));
+  assert.ok(page1.includes("글 12 &lt;b&gt;"));
+  assert.ok(page1.includes('<a href="/mapquilt/posts/2/">지난 글 →</a>'));
+  assert.ok(page1.includes("<span>1 / 2</span>"));
+  // 2쪽: 남은 2편, 1쪽으로 돌아가는 링크, 자기 주소가 canonical, 옛 쪽은 지운다
+  const page2 = read("posts", "2", "index.html");
+  assert.equal(page2.match(/<article>/g).length, 2);
+  assert.ok(page2.includes('<a href="/mapquilt/posts/">← 새 글</a>'));
+  assert.ok(page2.includes('<link rel="canonical" href="https://tentmakerapps.com/mapquilt/posts/2/" />'));
+  assert.ok(!fs.existsSync(site("posts", "9")));
+  // 글 페이지: 블로그 링크
+  assert.ok(read("p01", "index.html").includes('<a href="/mapquilt/posts/">블로그 글 모두 보기</a>'));
+  // sitemap: 글 전부와 블로그 1쪽(가장 새 글 날짜), 손으로 쓴 주소는 그대로
+  const xml = fs.readFileSync(sitemap, "utf8");
+  assert.ok(xml.includes("<url><loc>https://tentmakerapps.com/mapquilt/posts/</loc><lastmod>2026-11-12</lastmod></url>"));
+  assert.ok(xml.includes("<url><loc>https://tentmakerapps.com/mapquilt/p01/</loc><lastmod>2026-11-01</lastmod></url>"));
+  assert.ok(xml.includes("<url><loc>https://tentmakerapps.com/mapquilt/</loc></url>"));
+
+  rebuildApp(r, "mapquilt");
+  assert.deepEqual(snapshot(), first);
+
+  // 10편 이하면 쪽 넘김이 없다
+  for (const f of ["p11.md", "p12.md"]) fs.rmSync(path.join(postsDir, f));
+  rebuildApp(r, "mapquilt");
+  assert.ok(!read("posts", "index.html").includes('class="pages"'));
+  assert.ok(!fs.existsSync(site("posts", "2")));
+});
+
 test("머리말이 없으면 던진다", () => {
   assert.throws(() => splitPost("그냥 글"), /머리말/);
 });
@@ -80,4 +147,8 @@ test("페이지는 글자를 이스케이프하고 sitemap에 한 번만 더한�
   const xml = '<urlset>\n</urlset>\n';
   const once = addToSitemap(xml, "https://tentmakerapps.com/mapquilt/a/", "2026-11-10");
   assert.equal(addToSitemap(once, "https://tentmakerapps.com/mapquilt/a/", "2026-11-10"), once);
+  assert.equal(
+    addToSitemap(once, "https://tentmakerapps.com/mapquilt/a/", "2026-11-11"),
+    once.replace("2026-11-10", "2026-11-11"),
+  );
 });

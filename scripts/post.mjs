@@ -1,21 +1,21 @@
 // 매일 글 명령. .github/workflows/daily-post.yml이 차례대로 부른다.
 //   node scripts/post.mjs pick                    오늘 쓸 앱 이름
 //   node scripts/post.mjs prompt <앱>             Claude에게 줄 지시문
-//   node scripts/post.mjs publish <앱> <답 파일>   검사하고, 통과하면 글을 만든다(통과 못 하면 아무것도 쓰지 않고 실패)
+//   node scripts/post.mjs publish <앱> <답 파일>   검사하고, 통과하면 글을 만들고 rebuild한다(통과 못 하면 아무것도 쓰지 않고 실패)
+//   node scripts/post.mjs rebuild [앱]            글 페이지·블로그·sitemap을 원문에서 다시 만든다(앱을 빼면 모든 앱)
 // 날짜는 한국 날짜다. 시험할 때는 POST_DATE=YYYY-MM-DD로 바꾼다.
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
-  SITE,
-  addToSitemap,
   buildPrompt,
   checkPost,
   kstDate,
+  listApps,
   loadFacts,
   loadPosts,
   pickApp,
-  renderPage,
+  rebuildApp,
   splitPost,
 } from "./post-lib.mjs";
 
@@ -45,12 +45,11 @@ if (command === "pick") {
   const source = `---\n${["slug", "title", "description"].map((k) => `${k}: ${JSON.stringify(post.meta[k])}`).join("\n")}\nfacts: [${facts.join(", ")}]\ndate: "${date}"\n---\n\n${post.body}\n`;
   fs.mkdirSync(path.join(root, "apps", app, "posts"), { recursive: true });
   fs.writeFileSync(path.join(root, "apps", app, "posts", `${slug}.md`), source);
-  fs.mkdirSync(path.join(root, "site", app, slug), { recursive: true });
-  fs.writeFileSync(path.join(root, "site", app, slug, "index.html"), renderPage(post, loadFacts(root, app), app, date, root));
-  const sitemap = path.join(root, "site", "sitemap.xml");
-  fs.writeFileSync(sitemap, addToSitemap(fs.readFileSync(sitemap, "utf8"), `${SITE}/${app}/${slug}/`, date));
+  rebuildApp(root, app);
   console.log(`${app}/${slug} ${title} (${description.length}자 설명)`);
+} else if (command === "rebuild") {
+  for (const a of app ? [app] : listApps(root)) rebuildApp(root, a);
 } else {
-  console.error("쓰는 법: node scripts/post.mjs pick | prompt <앱> | publish <앱> <답 파일>");
+  console.error("쓰는 법: node scripts/post.mjs pick | prompt <앱> | publish <앱> <답 파일> | rebuild [앱]");
   process.exit(2);
 }

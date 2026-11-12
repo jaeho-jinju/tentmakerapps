@@ -12,12 +12,17 @@ export function kstDate(now = new Date()) {
   return new Date(now.getTime() + 9 * 3600 * 1000).toISOString().slice(0, 10);
 }
 
-/** facts.yaml이 있는 앱을 이름순으로 두고, 날마다 하나씩 돌아가며 고른다. */
-export function pickApp(root, date) {
-  const apps = fs
+/** facts.yaml이 있는 앱, 이름순. */
+export function listApps(root) {
+  return fs
     .readdirSync(path.join(root, "apps"))
     .filter((name) => fs.existsSync(path.join(root, "apps", name, "facts.yaml")))
     .sort();
+}
+
+/** facts.yaml이 있는 앱을 이름순으로 두고, 날마다 하나씩 돌아가며 고른다. */
+export function pickApp(root, date) {
+  const apps = listApps(root);
   if (apps.length === 0) throw new Error("apps/<앱>/facts.yaml이 없다");
   const day = Math.floor(Date.parse(`${date}T00:00:00Z`) / 86400000);
   return apps[day % apps.length];
@@ -28,7 +33,7 @@ export function loadFacts(root, app) {
   return YAML.parse(fs.readFileSync(file, "utf8"));
 }
 
-/** 이미 쓴 글(apps/<앱>/posts/*.md)의 머리말. */
+/** 이미 쓴 글(apps/<앱>/posts/*.md)의 머리말과 본문(body). */
 export function loadPosts(root, app) {
   const dir = path.join(root, "apps", app, "posts");
   if (!fs.existsSync(dir)) return [];
@@ -36,8 +41,14 @@ export function loadPosts(root, app) {
     .readdirSync(dir)
     .filter((f) => f.endsWith(".md"))
     .sort()
-    .map((f) => ({ slug: f.slice(0, -3), ...splitPost(fs.readFileSync(path.join(dir, f), "utf8")).meta }));
+    .map((f) => {
+      const { meta, body } = splitPost(fs.readFileSync(path.join(dir, f), "utf8"));
+      return { slug: f.slice(0, -3), ...meta, body };
+    });
 }
+
+/** 새 글부터. 날짜가 같으면 slug 순(loadPosts 순서)이다. */
+export const newestFirst = (posts) => [...posts].sort((a, b) => b.date.localeCompare(a.date));
 
 /** "---\n머리말\n---\n본문" 나누기. 앞뒤에 ``` 울타리가 있으면 걷어 낸다. */
 export function splitPost(text) {
@@ -68,7 +79,11 @@ export function checkPost({ meta, body }, facts, posts, root, app) {
 
   if (typeof slug !== "string" || !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug) || slug.length > 60) {
     errors.push(`slug는 영어 소문자·숫자·하이픈 60자 이하여야 한다: ${slug}`);
-  } else if (posts.some((p) => p.slug === slug) || fs.existsSync(path.join(root, "site", app, slug))) {
+  } else if (
+    slug === "posts" || // 블로그 주소(/<앱>/posts/)
+    posts.some((p) => p.slug === slug) ||
+    fs.existsSync(path.join(root, "site", app, slug))
+  ) {
     errors.push(`이미 있는 주소다: ${slug}`);
   }
   if (typeof title !== "string" || !title.trim() || title.length > LIMITS.title) {
@@ -125,10 +140,9 @@ export function buildPrompt(root, app, facts, posts) {
 const escape = (s) =>
   String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
-/** 글 페이지 HTML. 앱 소개는 맨 아래 상자 하나뿐이다. */
-export function renderPage({ meta, body }, facts, app, date, root) {
+/** 글 페이지와 블로그가 함께 쓰는 틀. 앱 소개는 main 맨 아래 상자 하나뿐이고, after는 그 상자 뒤에 붙는다. */
+function shell({ title, ogTitle, description, url, type }, facts, app, root, main, after = "") {
   const a = facts.app;
-  const url = `${SITE}/${app}/${meta.slug}/`;
   const og = fs.existsSync(path.join(root, "site", app, "img", "og.jpg"))
     ? `\n    <meta property="og:image" content="${SITE}/${app}/img/og.jpg" />`
     : "";
@@ -144,12 +158,12 @@ export function renderPage({ meta, body }, facts, app, date, root) {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>${escape(meta.title)} - ${escape(a.name)}</title>
-    <meta name="description" content="${escape(meta.description)}" />
+    <title>${escape(title)}</title>
+    <meta name="description" content="${escape(description)}" />
     <link rel="canonical" href="${url}" />
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content="${escape(meta.title)}" />
-    <meta property="og:description" content="${escape(meta.description)}" />
+    <meta property="og:type" content="${type}" />
+    <meta property="og:title" content="${escape(ogTitle)}" />
+    <meta property="og:description" content="${escape(description)}" />
     <meta property="og:url" content="${url}" />${og}${icon}
     <style>
       body {
@@ -185,26 +199,133 @@ export function renderPage({ meta, body }, facts, app, date, root) {
         background: #e3eff7;
         font-size: 15px;
       }
+      article {
+        padding-top: 20px;
+        border-top: 1px solid #d5e3ee;
+      }
+      h2 {
+        font-size: 20px;
+        line-height: 1.4;
+        margin: 0;
+      }
+      h2 + .meta {
+        margin: 4px 0 12px;
+      }
+      .pages {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 24px;
+      }
     </style>
   </head>
   <body>
     <main>
-      <p class="meta"><a href="/${app}/">${escape(a.name)}</a> · <time datetime="${date}">${date}</time></p>
-      <h1>${escape(meta.title)}</h1>
-${paragraphs(body)
-  .map((p) => `      <p>${escape(p)}</p>`)
-  .join("\n")}
+${main}
       <aside>
         <b><a href="/${app}/">${escape(a.name)}</a></b> · ${escape(a.tagline)}${stores.length ? `<br />${stores.join(" · ")}` : ""}
       </aside>
-    </main>
+${after}    </main>
   </body>
 </html>
 `;
 }
 
-/** sitemap.xml 끝에 글 주소를 더한다. */
+const time = (date) => `<time datetime="${date}">${date}</time>`;
+const link = (app, p) => `<a href="/${app}/${p.slug}/">${escape(p.title)}</a>`;
+
+const blogPath = (app, n) => (n === 1 ? `/${app}/posts/` : `/${app}/posts/${n}/`);
+
+/** 글 페이지 HTML. 맨 아래에 블로그 링크를 단다. */
+export function renderPage({ meta, body }, facts, app, date, root) {
+  const a = facts.app;
+  const main = `      <p class="meta"><a href="/${app}/">${escape(a.name)}</a> · ${time(date)}</p>
+      <h1>${escape(meta.title)}</h1>
+${paragraphs(body)
+  .map((p) => `      <p>${escape(p)}</p>`)
+  .join("\n")}`;
+  const page = {
+    title: `${meta.title} - ${a.name}`,
+    ogTitle: meta.title,
+    description: meta.description,
+    url: `${SITE}/${app}/${meta.slug}/`,
+    type: "article",
+  };
+  return shell(page, facts, app, root, main, `      <p><a href="${blogPath(app, 1)}">블로그 글 모두 보기</a></p>\n`);
+}
+
+export const PER_PAGE = 10;
+
+/** 블로그 n쪽(/<앱>/posts/, /<앱>/posts/2/ …) HTML. posts는 그 쪽에 실을 글(새 글부터), pages는 전체 쪽 수. */
+export function renderBlog(posts, facts, app, root, n, pages) {
+  const a = facts.app;
+  const title = `${a.name} 블로그${n > 1 ? ` ${n}쪽` : ""}`;
+  const articles = posts.map(
+    (p) => `      <article>
+        <h2>${link(app, p)}</h2>
+        <p class="meta">${time(p.date)}</p>
+${paragraphs(p.body)
+  .map((t) => `        <p>${escape(t)}</p>`)
+  .join("\n")}
+      </article>`,
+  );
+  const nav =
+    pages > 1
+      ? `
+      <nav class="pages">
+        ${n > 1 ? `<a href="${blogPath(app, n - 1)}">← 새 글</a>` : "<span></span>"}
+        <span>${n} / ${pages}</span>
+        ${n < pages ? `<a href="${blogPath(app, n + 1)}">지난 글 →</a>` : "<span></span>"}
+      </nav>`
+      : "";
+  const main = `      <p class="meta"><a href="/${app}/">${escape(a.name)}</a></p>
+      <h1>${escape(title)}</h1>
+${articles.join("\n")}${nav}`;
+  const page = {
+    title,
+    ogTitle: title,
+    description: `${a.name} 블로그에 올린 글을 모두 모았어요.`,
+    url: `${SITE}${blogPath(app, n)}`,
+    type: "website",
+  };
+  return shell(page, facts, app, root, main);
+}
+
+/** sitemap.xml에 주소를 더한다. 이미 있으면 lastmod만 고친다. */
 export function addToSitemap(xml, url, date) {
-  if (xml.includes(`<loc>${url}</loc>`)) return xml;
-  return xml.replace("</urlset>", `  <url><loc>${url}</loc><lastmod>${date}</lastmod></url>\n</urlset>`);
+  const entry = `<url><loc>${url}</loc><lastmod>${date}</lastmod></url>`;
+  const start = xml.indexOf(`<url><loc>${url}</loc>`);
+  if (start === -1) return xml.replace("</urlset>", `  ${entry}\n</urlset>`);
+  const end = xml.indexOf("</url>", start) + "</url>".length;
+  return xml.slice(0, start) + entry + xml.slice(end);
+}
+
+const write = (file, text) => {
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, text);
+};
+
+/**
+ * apps/<앱>/posts/*.md에서 글 페이지 전부, 블로그(/<앱>/posts/와 2쪽부터), sitemap.xml을 다시 만든다.
+ * 여러 번 돌려도 결과가 같다. 소개 페이지의 블로그 링크는 주소가 바뀌지 않아 손대지 않는다.
+ */
+export function rebuildApp(root, app) {
+  const posts = newestFirst(loadPosts(root, app));
+  if (posts.length === 0) return;
+  const facts = loadFacts(root, app);
+  const dir = path.join(root, "site", app);
+  const sitemap = path.join(root, "site", "sitemap.xml");
+  let xml = fs.readFileSync(sitemap, "utf8");
+  for (const p of posts) {
+    write(path.join(dir, p.slug, "index.html"), renderPage({ meta: p, body: p.body }, facts, app, p.date, root));
+    xml = addToSitemap(xml, `${SITE}/${app}/${p.slug}/`, p.date);
+  }
+  // 글을 지워 쪽 수가 줄어도 옛 쪽이 남지 않게 블로그 폴더는 통째로 다시 만든다
+  fs.rmSync(path.join(dir, "posts"), { recursive: true, force: true });
+  const pages = Math.ceil(posts.length / PER_PAGE);
+  for (let n = 1; n <= pages; n++) {
+    const html = renderBlog(posts.slice((n - 1) * PER_PAGE, n * PER_PAGE), facts, app, root, n, pages);
+    write(path.join(dir, "posts", n === 1 ? "" : String(n), "index.html"), html);
+  }
+  xml = addToSitemap(xml, `${SITE}/${app}/posts/`, posts[0].date);
+  fs.writeFileSync(sitemap, xml);
 }
