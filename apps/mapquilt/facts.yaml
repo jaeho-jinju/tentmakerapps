@@ -16,7 +16,7 @@ app:
   developer: TheTentmaker
   page: https://tentmakerapps.com/mapquilt/
   app_store: https://apps.apple.com/kr/app/id6826815134
-  google_play: null # 비공개 테스트 중. 프로덕션에 나오면 주소를 넣는다.
+  google_play: https://play.google.com/store/apps/details?id=io.github.ovso.mapquilt
   privacy: https://sites.google.com/view/mapquilt
 
 facts:
@@ -27,10 +27,10 @@ facts:
       - mapquilt#18 범위 밖(전면광고)
 
   - id: stores
-    fact: iPhone과 안드로이드 앱이다. App Store에는 나와 있고, Google Play는 비공개 테스트 중이라 아직 누구나 받을 수는 없다.
+    fact: iPhone과 안드로이드 앱이고, App Store와 Google Play에서 받을 수 있다.
     source:
       - App Store 조회 API(2026-11-09, 버전 26.45.0)
-      - tentmakerapps:docs/mapquilt.md 정한 것 4
+      - Google Play 앱 페이지(2026-11-14, 응답 200)
 
   - id: korea-only
     fact: 한국어 앱이고 대한민국에서만 배포한다. 지도는 한국만 다룬다.
