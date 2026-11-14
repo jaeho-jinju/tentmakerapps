@@ -8,7 +8,7 @@ export const SITE = "https://tentmakerapps.com";
 export const LIMITS = { body: 300, title: 40, description: 80, paragraphs: 3, facts: 2 };
 
 /** 앱마다 한 주에 올리는 글 수. 이 숫자만 고치면 앱이 몇 개든 하루에 올릴 글 수가 맞춰진다. */
-export const WEEKLY = 2;
+export const WEEKLY = 3;
 
 /** 한국 날짜(YYYY-MM-DD). */
 export function kstDate(now = new Date()) {

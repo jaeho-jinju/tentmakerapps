@@ -15,7 +15,7 @@
 
 ## 매일 글
 
-`.github/workflows/daily-post.yml`이 매일 09:17(한국)에 돈다. 앱마다 한 주에 `WEEKLY`편(`scripts/post-lib.mjs`, 지금 2)을 올린다.
+`.github/workflows/daily-post.yml`이 매일 09:17(한국)에 돈다. 앱마다 한 주에 `WEEKLY`편(`scripts/post-lib.mjs`, 지금 3)을 올린다.
 
 - 한 주 몫(앱 수 × `WEEKLY`편)을 7일에 고르게 나누고, 앱은 이름순으로 돌아가며 채운다. 그래서 날에 따라 0편·1편·여러 편이다. 앱이 늘면 하루 편수가 저절로 늘고, 앱마다 한 주 편수는 그대로다.
 - `WEEKLY`를 바꾸려면 그 숫자만 고쳐 `main`에 푸시한다. 다음 날 실행부터 적용된다. 날짜별로 어느 앱을 쓰는지는 `POST_DATE=2026-11-20 node scripts/post.mjs pick`으로 본다.
