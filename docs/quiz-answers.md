@@ -11,9 +11,10 @@
 4. 앱의 말을 쓴다(cashwalk `CONTEXT.md`). 정답 기사·정답 목록·정답 보기·원문 보기·내 퀴즈·오늘 판·푼 퀴즈 체크·연속 일수·퀴즈 알림으로 쓰고, 앱을 '뉴스 앱'이라 부르지 않는다. 평가어("가장 빠른", "유용한")는 쓰지 않는다.
 5. **보상을 주는 앱처럼 보이지 않게 한다.** 앱 이름에 '돈 버는'이 있지만 앱은 보상을 주지 않는다. '알아 두세요'에 "이 앱은 보상을 주지 않아요. 퀴즈는 그 퀴즈 앱에서 풀고, 보상도 거기서 받아요."를 둔다.
 6. 화면 그림은 스토어 iOS 스크린샷 5장(26.41.x, 오늘 판·정답 보기·내 퀴즈·다크 오늘 판·다크 정답 보기)이다. 남의 로고·앱 아이콘은 없고, 퀴즈 이름은 칩·기사 제목의 글자로만 보인다(cashwalk `docs/store-listing.md` §5).
-7. 구성: 첫 화면(제목·설명·알약 세 개·스토어 배지·휴대폰 01과 02) → 기능 세 칸(정답 보기 05, 내 퀴즈·퀴즈 알림 03, 다루는 퀴즈 04와 퀴즈 이름 알약) → 그 밖에도 6칸 → 알아 두세요 → 받기 카드 → 하단(데이터 한 줄·블로그·방침·문의).
+7. 구성: 첫 화면(제목·설명·알약 세 개·스토어 배지·휴대폰 01과 02) → 기능 세 칸(정답 보기 05, 내 퀴즈·퀴즈 알림 03, 다루는 퀴즈 04와 퀴즈 이름 알약) → 그 밖에도 6칸 → 알아 두세요 → 받기 카드(배지와 영상) → 하단(데이터 한 줄·블로그·방침·문의).
 8. 알약 세 개는 로그인 없음·기기 안에만 저장·정답은 눌러서 복사다. 첫 화면과 받기 카드, 두 곳에 둔다.
 9. 두 스토어 모두 나와 있어 배지 둘 다 링크를 건다.
+10. 영상은 표지 그림만 두고, 누를 때 YouTube 플레이어(`2UOKIEN5qpg`, 14초 Shorts, 첫 블로그 글로 만든 것)를 불러온다. 재료(녹화·배경음)를 만드는 법은 cashwalk `docs/promo-video.md`, 영상은 tentmakerapps-marketing이 만든다.
 
 ## 올리는 법
 
@@ -29,4 +30,5 @@
 | `img/appstore-ko.svg`·`img/googleplay-ko.webp` | `site/hotkey/img/`의 공식 배지 | 그대로 복사 |
 | `img/icon.webp` | cashwalk `assets/icon.png`(1024) | `cwebp -q 85 -resize 256 0` |
 | `img/icon-180.png` | cashwalk `assets/icon.png` | `sips -Z 180` |
+| `img/poster.webp` | 올린 영상(tentmakerapps-marketing `out/quiz-answers/when-to-check-quiz-answers.mp4`) 5초 장면(앱 화면이 보이는 첫 장면. 질문 화면은 받기 카드와 같은 빨강이라 묻힌다) | `ffmpeg -ss 5 -i … -frames:v 1 -vf scale=300:-1` 뒤 `cwebp -q 75` |
 | `img/og.jpg` | `feature-graphic.png`(1024×500, 상표 없음) | `sips -s format jpeg -s formatOptions 85` |

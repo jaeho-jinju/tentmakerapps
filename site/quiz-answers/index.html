@@ -480,7 +480,7 @@
           </a>
           <nav>
             <a href="#features">기능</a>
-            <a href="#get">받기</a>
+            <a href="#video">영상</a>
             <a href="mailto:ovsoce@gmail.com">문의</a>
           </nav>
         </div>
@@ -657,7 +657,7 @@
         </div>
       </section>
 
-      <section class="cta" id="get">
+      <section class="cta" id="video">
         <div class="text">
           <h2>오늘 할 퀴즈,<br /><em>빠짐없이</em> 챙기세요.</h2>
           <ul class="perks">
@@ -682,6 +682,18 @@
             /></a>
           </div>
         </div>
+        <button
+          class="video"
+          type="button"
+          aria-label="14초 소개 영상 재생"
+          onclick="
+            this.innerHTML =
+              '<iframe src=&quot;https://www.youtube-nocookie.com/embed/2UOKIEN5qpg?autoplay=1&amp;playsinline=1&quot; title=&quot;돈 버는 퀴즈 정답 소개 영상&quot; allow=&quot;autoplay; encrypted-media; picture-in-picture&quot; allowfullscreen></iframe>'
+          "
+        >
+          <img src="img/poster.webp" alt="" width="300" height="533" loading="lazy" />
+          <span class="play">▶</span>
+        </button>
       </section>
     </main>
 
