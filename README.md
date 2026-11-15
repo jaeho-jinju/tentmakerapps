@@ -34,12 +34,12 @@ rebuild(`node scripts/post.mjs rebuild [앱]`, 앱을 빼면 모든 앱)는 `app
 
 소개 페이지는 하단의 '블로그' 링크(`/<앱>/posts/`) 하나로 블로그와 이어진다. 주소가 바뀌지 않으므로 rebuild는 소개 페이지를 건드리지 않는다. 링크는 모두 화면에 보이는 보통 링크다. 숨긴 링크(안 보이게 한 글자·링크)는 Google 스팸 정책에 걸리므로 쓰지 않는다.
 
-검사(`scripts/post-lib.mjs` `checkPost`): 본문 300자·문단 3개 이하, 사실 1~2개(facts.yaml의 id), 고른 사실에 없는 숫자 금지, facts.yaml `avoid`의 `words` 금지, 주소·목록 기호 금지, 이미 쓴 제목·주소와 `posts`(블로그 주소) 금지. `npm test`로 검사와 rebuild를 시험한다.
+검사(`scripts/post-lib.mjs` `checkPost`): 본문 300자·문단 3개 이하, 사실 1~2개(facts.yaml의 id), 고른 사실에 없는 숫자 금지, facts.yaml `avoid`의 `words` 금지(규칙에 `fields`가 있으면 그 자리만 본다. 예: quiz-answers의 남의 상표는 `slug`·`title`·`description`에서만 막는다), 주소·목록 기호 금지, 이미 쓴 제목·주소와 `posts`(블로그 주소) 금지. `npm test`로 검사와 rebuild를 시험한다.
 
 - 비밀값: Settings › Secrets and variables › Actions에 `CLAUDE_CODE_OAUTH_TOKEN`을 둔다. 맥에서 `claude setup-token`으로 만든 1년짜리 토큰이고, Claude 구독 사용량에서 나간다. 만료 전에 다시 만들어 바꾼다.
 - 무료 원칙: [claude.ai/settings/usage](https://claude.ai/settings/usage)의 Usage credits(한국어 화면은 "사용 크레딧" 토글)는 꺼 둔다. 꺼져 있으면 구독 한도를 넘는 날은 Claude 호출이 실패해 그날 글만 빠진다. 켜져 있으면 넘는 만큼 돈이 나간다.
 - 손으로 한 번 돌리기: Actions › 매일 글 › Run workflow.
-- 앱 더하기: `apps/<앱>/facts.yaml`(사실마다 근거)과 `site/<앱>/index.html`(소개 페이지)을 만든다. 소개 페이지 하단에는 다른 앱처럼 '블로그' 링크(`/<앱>/posts/`)를 둔다.
+- 앱 더하기: `apps/<앱>/facts.yaml`(사실마다 근거)과 `site/<앱>/index.html`(소개 페이지)을 만든다. 소개 페이지 하단에는 다른 앱처럼 '블로그' 링크(`/<앱>/posts/`)를 둔다. facts.yaml `app.notice`를 적으면 글·블로그 페이지 아래 앱 상자에 그 문장이 붙는다(quiz-answers의 비공식 앱 안내).
 
 ## 옛 주소
 

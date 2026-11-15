@@ -1,0 +1,215 @@
+# 돈 버는 퀴즈 정답 사실 목록
+#
+# 매일 쓰는 글은 이 파일에 있는 사실만 쓴다. 글에 쓴 사실은 id로 밝히고, 검사 스크립트가 이 파일과 대조한다.
+# 기능이나 스토어 상태가 바뀌면 이 파일부터 고친다.
+#
+# 이 앱은 앱테크 퀴즈(다른 회사 앱의 퀴즈)의 그날 정답을 뉴스 매체의 정답 기사에서 가져와 보여 주고, 하는 퀴즈를 챙기게 돕는 앱이다.
+# 앱은 보상을 주지 않는다. 퀴즈는 그 퀴즈 앱에서 풀고, 보상도 거기서 받는다.
+# 앱 저장소 이름과 패키지 이름은 cashwalk이지만 사이트 주소는 quiz-answers다(남의 상표를 주소에 쓰지 않는다, 2026-11-15 사용자 결정).
+# 퀴즈 이름은 본문에만 쓴다(같은 날 사용자 결정). 제목·설명·주소에는 쓰지 않는다(avoid quiz-names). 글 페이지 아래 앱 상자에
+# app.notice(비공식 앱 안내)가 저절로 붙는다.
+#
+# source 적는 법
+#   cashwalk:<경로>        jaeho-jinju/cashwalk 저장소의 파일
+#   tentmakerapps:<경로>   이 저장소의 파일
+
+checked: "2026-11-15"
+
+app:
+  name: 돈 버는 퀴즈 정답
+  tagline: 오늘 할 앱테크 퀴즈 챙기기
+  notice: 개인이 만든 비공식 앱이에요. 퀴즈를 운영하는 회사나 정답 기사를 낸 언론사와 관계가 없어요.
+  developer: TheTentmaker
+  page: https://tentmakerapps.com/quiz-answers/
+  app_store: https://apps.apple.com/kr/app/id6816394791
+  google_play: https://play.google.com/store/apps/details?id=io.github.ovso.cashwalk
+  privacy: https://sites.google.com/view/cashwalk
+
+facts:
+  - id: unofficial
+    fact: 개인이 만든 비공식 앱이고, 퀴즈를 운영하는 회사나 정답 기사를 낸 언론사와 관계가 없다. 그 회사들이 만들거나 승인한 앱이 아니다.
+    source:
+      - cashwalk:docs/store-listing.md §2.3 정답의 출처
+
+  - id: no-rewards
+    fact: 이 앱은 보상을 주지 않는다. 퀴즈는 그 퀴즈 앱에서 풀고, 이 앱에서는 정답을 보고 푼 퀴즈를 챙긴다.
+    source:
+      - cashwalk:docs/store-listing.md §5.1 연령 등급(퀴즈 보상은 다른 앱의 것이고 이 앱은 보상을 주지 않는다)
+      - cashwalk:CONTEXT.md 퀴즈 앱
+
+  - id: stores
+    fact: iPhone과 안드로이드 앱이고, App Store와 Google Play에서 받을 수 있다.
+    source:
+      - App Store 조회 API(2026-11-15, 버전 26.41.1)
+      - Google Play 앱 페이지(2026-11-15, 응답 200)
+
+  - id: free-ads
+    fact: 무료 앱이고 광고가 있다.
+    source:
+      - cashwalk:docs/store-listing.md §2.3 기록·광고·개인정보, §5.1 가격·배포
+
+  - id: korea-only
+    fact: 한국어 앱이고 대한민국에서만 배포한다.
+    source:
+      - cashwalk:docs/store-listing.md 머리말(배포 국가 대한민국), §5.1 가격·배포
+
+  - id: no-login
+    fact: 회원가입이나 로그인이 없고 개인정보를 입력받지 않는다. 내 퀴즈와 체크 기록은 이 기기에만 남는다.
+    source:
+      - cashwalk:docs/store-listing.md §2.3 기록·광고·개인정보
+
+  - id: data-collected
+    fact: 앱 이용 통계·오류 보고·광고를 위해 Google 서비스가 정보를 수집한다. 자세한 내용은 개인정보처리방침에 있다.
+    source:
+      - cashwalk:docs/store-listing.md §2.3 기록·광고·개인정보
+
+  - id: kinds
+    fact: 캐시워크 돈버는퀴즈, 쏠퀴즈, 토스 행운퀴즈, 캐시닥 용돈퀴즈, KB Pay 리브메이트 오늘의 퀴즈, 오퀴즈, 카카오뱅크 AI 이모지 퀴즈, 비트버니 퀴즈의 정답을 보여 준다. 그 밖에 새로 올라오는 정답은 '기타'로 보여 준다.
+    source:
+      - cashwalk:docs/store-listing.md §2.3 다루는 퀴즈
+      - cashwalk:src/core/kinds.ts KINDS
+      - cashwalk:CONTEXT.md 퀴즈 종류
+
+  - id: answer-source
+    fact: 정답은 매일 공개되는 뉴스 매체의 퀴즈 정답 기사에서 가져온다. 앱은 기사에 실린 정답을 그대로 옮기므로, 기사가 늦게 올라오거나 나중에 고쳐지면 앱에도 그만큼 늦게 반영된다.
+    source:
+      - cashwalk:docs/store-listing.md §2.3 정답의 출처
+      - cashwalk:CONTEXT.md 정답 기사
+
+  - id: view-original
+    fact: 정답 보기마다 출처(매체 이름)와 [원문 보기]가 있다. [원문 보기]는 정답이 실린 원래 기사를 브라우저 창으로 연다.
+    source:
+      - cashwalk:docs/store-listing.md §2.3 정답 보기와 퀴즈 앱 열기
+      - cashwalk:CONTEXT.md 정답 보기, 원문 보기
+
+  - id: answer-list
+    fact: 정답 목록은 최근 7일의 정답 기사를 오늘·어제·날짜별로 묶어 보여 준다. 정답 날짜가 아직 오지 않은 기사는 담지 않는다.
+    source:
+      - cashwalk:docs/store-listing.md §2.3 정답 목록
+      - cashwalk:CONTEXT.md 정답 목록, 날짜 묶음
+
+  - id: kind-filter
+    fact: 정답 목록 위쪽 칩으로 보고 싶은 퀴즈만 남긴다. 고른 칩은 다음에 열어도 그대로다.
+    source:
+      - cashwalk:docs/store-listing.md §2.3 정답 목록
+      - cashwalk:CONTEXT.md 종류 거르기
+
+  - id: answer-view
+    fact: 정답 보기는 정답 기사에서 문제 이름과 정답만 간추려 보여 준다. 기사의 문장과 사진은 담지 않는다.
+    source:
+      - cashwalk:docs/store-listing.md §2.3 정답 보기와 퀴즈 앱 열기
+      - cashwalk:CONTEXT.md 정답 보기
+
+  - id: copy-parts
+    fact: 정답을 누르면 복사된다. '7, 9, LED'처럼 여러 칸에 넣는 정답은 한 칸씩 따로 복사하고, [전체 복사]로 한 번에 복사할 수도 있다.
+    source:
+      - cashwalk:docs/store-listing.md §2.3 정답 보기와 퀴즈 앱 열기
+      - cashwalk:CONTEXT.md 정답 조각
+      - 2026-11-15 에뮬레이터 녹화(정답 보기의 [전체 복사])
+
+  - id: ended
+    fact: 정답 기사가 종료됐다고 적은 문제는 정답 보기 맨 아래에 접어 둔다. 종료된 문제의 정답도 남아 있다.
+    source:
+      - cashwalk:docs/store-listing.md §2.3 정답 보기와 퀴즈 앱 열기
+      - cashwalk:CONTEXT.md 종료
+
+  - id: open-quiz-app
+    fact: 정답 보기의 [○○ 열기]로 그 퀴즈 앱으로 넘어간다. 바로 열 수 없으면 스토어에 있는 그 앱 페이지로 간다.
+    source:
+      - cashwalk:docs/store-listing.md §2.3 정답 보기와 퀴즈 앱 열기
+      - cashwalk:CONTEXT.md 퀴즈 앱 열기
+
+  - id: my-quizzes
+    fact: 내 퀴즈로 하는 퀴즈만 골라 둔다. 처음에는 기타를 뺀 퀴즈가 모두 골라져 있고, 안 하는 퀴즈를 뺀다.
+    source:
+      - cashwalk:CONTEXT.md 내 퀴즈(F-16)
+      - cashwalk:docs/store-listing.md §2.3 오늘 판
+
+  - id: today-board
+    fact: 정답 목록 맨 위 오늘 판에서 내 퀴즈마다 오늘 정답이 올라왔는지, 이미 풀었는지 본다. 타일을 누르면 그 퀴즈의 오늘 정답을 연다.
+    source:
+      - cashwalk:docs/store-listing.md §2.3 오늘 판
+      - cashwalk:CONTEXT.md 오늘 판
+
+  - id: solved-check
+    fact: 퀴즈를 풀었으면 동그라미나 [풀었어요]를 눌러 푼 퀴즈 체크를 한다. 퀴즈마다 하루 한 번이고, 정답이 아직 안 올라와도 체크할 수 있다. 정답을 복사하거나 퀴즈 앱을 열어도 저절로 체크되지 않는다.
+    source:
+      - cashwalk:CONTEXT.md 푼 퀴즈 체크
+      - cashwalk:docs/store-listing.md §2.3 오늘 판, 정답 보기와 퀴즈 앱 열기
+
+  - id: streak
+    fact: 하루에 하나라도 체크하면 연속 일수가 이어진다. 내 퀴즈를 다 풀지 않아도 이어지고, 오늘이 지나야 끊긴다.
+    source:
+      - cashwalk:CONTEXT.md 연속 일수
+      - cashwalk:docs/store-listing.md §2.3 오늘 판
+
+  - id: reminders
+    fact: 퀴즈 알림을 켜면 내 퀴즈 중 오늘 아직 안 푼 것만, 그 퀴즈 정답이 보통 올라오는 시각에 알려 준다. 처음에는 꺼져 있고 내 퀴즈 화면의 [알림 받기]로 켠다. 앱을 일주일 넘게 열지 않으면 알림도 멈춘다.
+    source:
+      - cashwalk:docs/store-listing.md §2.3 퀴즈 알림
+      - cashwalk:CONTEXT.md 퀴즈 알림
+
+  - id: reminder-times
+    fact: 퀴즈 알림 시각은 앱이 정한 것으로 쏠퀴즈 8:00, 카카오뱅크 AI 이모지 퀴즈 8:10, 비트버니 퀴즈 9:30, KB Pay 리브메이트 오늘의 퀴즈 10:10, 캐시워크 돈버는퀴즈 11:10이다. 정답이 올라오는 시각이 고르지 않은 토스 행운퀴즈·캐시닥 용돈퀴즈·오퀴즈는 알림이 없다. 앱은 정답이 실제로 올라왔는지 모른 채 '정답 확인할 시간이에요'라고 알린다.
+    source:
+      - cashwalk:src/core/quizReminders.ts REMINDER_TIMES, reminderText
+      - cashwalk:CONTEXT.md 퀴즈 알림
+      - 2026-11-15 에뮬레이터 녹화(내 퀴즈 화면의 '매일 11:10 알림' 등)
+
+  - id: rounds
+    fact: 카카오뱅크 AI 이모지 퀴즈는 하루에 오전 8시·오후 12시·오후 8시 세 회차가 있고, 정답 기사에 실린 회차의 정답만 앱에 나온다.
+    source:
+      - cashwalk:CONTEXT.md 회차
+
+  - id: dark-mode
+    fact: 다크 모드와 글자 크기는 기기 설정을 따른다.
+    source:
+      - cashwalk:docs/store-listing.md §2.3 정답 목록
+
+# 글에서 쓰지 않는 것. words에 있는 말이 글에 있으면 검사에서 떨어진다. fields가 있으면 그 자리만 본다(없으면 제목·설명·본문).
+avoid:
+  - id: quiz-names
+    rule: 퀴즈 이름과 퀴즈 앱 이름(남의 상표)은 제목·설명·주소(slug)에 쓰지 않는다. 본문에는 고른 사실에 나온 이름만, 무엇의 정답인지 밝힐 때 쓴다. 비공식 앱 안내는 페이지 아래에 저절로 붙는다.
+    fields: [slug, title, description]
+    words: [캐시워크, 쏠퀴즈, 쏠페이, 슈퍼SOL, 신한, 토스, 캐시닥, KB Pay, KB페이, 리브메이트, 오퀴즈, OK캐쉬백, 카카오뱅크, 카뱅, 비트버니, cashwalk, solquiz, shinhan, toss, cashdoc, kbpay, livemate, oquiz, okcashbag, kakaobank, bitbunny]
+    source:
+      - cashwalk:docs/store-listing.md 원칙(제목·짧은 설명·그래픽에 남의 상표를 쓰지 않는다, 퀴즈 이름은 설명에 한 번)
+      - 2026-11-15 사용자 결정(본문에만)
+
+  - id: outlets
+    rule: 정답 기사를 낸 매체(언론사) 이름은 쓰지 않는다. '뉴스 매체'라고만 쓴다.
+    words: [BNT, bnt, 비엔티, 게임톡, 남도일보]
+    source:
+      - cashwalk:docs/store-listing.md §5.1 설명(언론사 이름을 적지 않는다, 사용자 2026-09-27)
+
+  - id: not-official
+    rule: 퀴즈를 운영하는 회사가 만들거나 승인한 앱처럼 쓰지 않는다.
+    words: [공식 앱, 공식 제공, 공식 정답, 제휴, 승인받은, 공인]
+    source:
+      - cashwalk:docs/store-listing.md §2.3 정답의 출처(비공식 문구)
+
+  - id: no-earn-claims
+    rule: 이 앱이 돈이나 포인트를 준다고 쓰지 않는다. 앱은 보상을 주지 않는다. 앱 이름의 '돈 버는'은 이름으로만 쓴다.
+    words: [돈을 벌어, 돈을 벌 수, 돈 벌기, 수익 보장, 월 수익, 부수입, 포인트를 드, 포인트 지급, 적립해 드, 보상을 드, 용돈 벌기]
+    source:
+      - cashwalk:docs/store-listing.md §5.1 연령 등급(이 앱은 보상을 주지 않는다)
+
+  - id: terms
+    rule: 앱의 용어를 쓴다. 정답 기사·정답 목록·정답 보기·원문 보기·내 퀴즈·오늘 판·푼 퀴즈 체크·연속 일수·퀴즈 알림·퀴즈 앱으로 쓴다. 앱을 '뉴스 앱'이라 부르지 않는다.
+    words: [뉴스 앱, 피드, 웹뷰, 딥링크, 즐겨찾기, 구독, 스트릭, 출석, 대시보드, 카테고리, 해답, 푸시]
+    source:
+      - cashwalk:CONTEXT.md _Avoid_
+      - cashwalk:docs/store-listing.md 원칙(앱을 '뉴스 앱'이라 부르지 않는다)
+
+  - id: no-trademarks
+    rule: 퀴즈와 관계없는 남의 상표와 앱 이름도 쓰지 않는다.
+    words: [네이버, 카카오톡, 카톡, 유튜브, 인스타그램, 페이스북, 구글 검색]
+    source:
+      - tentmakerapps:apps/mapquilt/facts.yaml no-trademarks와 같은 원칙
+
+  - id: no-hype
+    rule: 앱을 치켜세우는 말과 순위·가격 문구를 쓰지 않는다.
+    words: [최고, 1위, 최초, 유일, 완벽, 가장 쉬운, 가장 좋은, 가장 빠른, 강력 추천, 필수 앱, 유용한]
+    source:
+      - cashwalk:docs/store-listing.md 원칙(평가어 "가장 빠른", "유용한" 금지)
+      - tentmakerapps:apps/mapquilt/facts.yaml no-hype와 같은 원칙

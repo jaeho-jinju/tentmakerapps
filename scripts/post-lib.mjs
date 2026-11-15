@@ -123,9 +123,14 @@ export function checkPost({ meta, body }, facts, posts, root, app) {
   const stray = [...new Set(numbers(text))].filter((n) => !allowed.has(n));
   if (stray.length) errors.push(`쓴 사실에 없는 숫자: ${stray.join(", ")}`);
 
+  // fields가 있는 규칙은 그 자리만 본다(예: 남의 상표는 slug·제목·설명에만 막고 본문에는 둔다).
+  const fields = { slug, title, description, body };
   for (const rule of facts.avoid ?? []) {
+    const where = rule.fields
+      ? rule.fields.map((f) => fields[f]).filter((t) => typeof t === "string").join("\n")
+      : text;
     for (const word of rule.words ?? []) {
-      if (text.includes(word)) errors.push(`쓰지 않는 말(${rule.id}): ${word}`);
+      if (where.includes(word)) errors.push(`쓰지 않는 말(${rule.id}): ${word}`);
     }
   }
   return errors;
@@ -232,7 +237,7 @@ function shell({ title, ogTitle, description, url, type }, facts, app, root, mai
     <main>
 ${main}
       <aside>
-        <b><a href="/${app}/">${escape(a.name)}</a></b> · ${escape(a.tagline)}${stores.length ? `<br />${stores.join(" · ")}` : ""}
+        <b><a href="/${app}/">${escape(a.name)}</a></b> · ${escape(a.tagline)}${stores.length ? `<br />${stores.join(" · ")}` : ""}${a.notice ? `<br /><small>${escape(a.notice)}</small>` : ""}
       </aside>
 ${after}    </main>
   </body>

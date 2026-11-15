@@ -54,6 +54,15 @@ test("쓰지 않는 말은 떨어진다", () => {
   assert.ok(check(reply({}, "퀼트를 채워요.")).some((e) => e.includes("screen-words")));
 });
 
+test("fields가 있는 쓰지 않는 말은 그 자리에서만 떨어진다", () => {
+  const scoped = { ...facts, avoid: [{ id: "names", fields: ["slug", "title", "description"], words: ["퀼트", "quilt"] }] };
+  const run = (text) => checkPost(splitPost(text), scoped, [], root, "mapquilt");
+  assert.deepEqual(run(reply({}, "퀼트를 채워요.")), []);
+  assert.ok(run(reply({ title: "퀼트 채우기" })).some((e) => e.includes("names")));
+  assert.ok(run(reply({ description: "퀼트를 채워요" })).some((e) => e.includes("names")));
+  assert.ok(run(reply({ slug: "quilt-regions" })).some((e) => e.includes("names")));
+});
+
 test("주소와 목록 기호는 떨어진다", () => {
   const errors = check(reply({}, "- 목록\n\nhttps://example.com"));
   assert.ok(errors.some((e) => e.includes("주소")));
@@ -160,6 +169,10 @@ test("앱마다 어느 7일을 잡아도 weekly편씩 고른다", () => {
 test("페이지는 글자를 이스케이프하고 sitemap에 한 번만 더한다", () => {
   const html = renderPage(splitPost(reply({}, "<b>167곳</b>")), facts, "mapquilt", "2026-11-10", root);
   assert.ok(html.includes("&lt;b&gt;167곳&lt;/b&gt;"));
+  assert.ok(!html.includes("<small>"));
+  const noticed = { ...facts, app: { ...facts.app, notice: "비공식 앱 <안내>" } };
+  const withNotice = renderPage(splitPost(reply()), noticed, "mapquilt", "2026-11-10", root);
+  assert.ok(withNotice.includes("<br /><small>비공식 앱 &lt;안내&gt;</small>\n      </aside>"));
   assert.ok(html.includes('<link rel="canonical" href="https://tentmakerapps.com/mapquilt/how-many-regions/" />'));
   const xml = '<urlset>\n</urlset>\n';
   const once = addToSitemap(xml, "https://tentmakerapps.com/mapquilt/a/", "2026-11-10");
