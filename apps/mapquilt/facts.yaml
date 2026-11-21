@@ -128,6 +128,15 @@ facts:
       - mapquilt:src/features/quilt-map/PutPhotosSheet.tsx [<지역>에 N장 넣기]
       - 2026-11-20 App Store·Google Play 모두 26.47.0
 
+  - id: paint
+    fact: 빈 지역은 사진 대신 정해 둔 색 6가지 가운데 하나로 칠해 둘 수 있다. 빈 지역 시트의 [색 칠하기]를 누르고 색을 누르면 바로 칠해지고, [색 바꾸기]로 바꾸거나 [색 지우기]로 지운다. 색이 무슨 뜻인지(갈 곳, 사진 없이 다녀온 곳 등)는 사용자가 정한다. 칠한 지역도 빈 지역이라 진행률에 세지 않고, 사진을 넣으면 색은 사라진다. 지도와 지도 목록의 작은 지도에는 색이 보이고, 공유 이미지에는 보이지 않는다. 안드로이드는 26.47.1부터 들어갔고, iPhone은 아직이다(2026-11-21).
+    source:
+      - mapquilt#104 정할 것 1·2·3·5·7
+      - mapquilt:GLOSSARY.md 칠한 빈 지역
+      - mapquilt:src/features/quilt-map/RegionSheet.tsx [색 칠하기]·[색 바꾸기]·[색 지우기]
+      - mapquilt:src/core/map-drawing/draw.ts PAINT_FILLS 6색
+      - 2026-11-21 Google Play 26.47.1, App Store 26.47.0(iPhone이 나가면 이 사실의 마지막 문장을 고친다)
+
   - id: progress
     fact: 지도 위에 "23 / 167"처럼 채운 지역 수가 늘 보인다. 진행률을 누르면 시·도별 진행률과 채운 지역·빈 지역 목록을 보고, 목록에서 지역 이름을 누르면 지도에서 그 지역을 바로 연다.
     source:
